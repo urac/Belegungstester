@@ -40,8 +40,8 @@ type alias Model =
 
 init : flags -> ( Model, Cmd msg )
 init _ =
-    ( { text = ""
-      , convertedText = ""
+    ( { text = defaultText
+      , convertedText = convertText defaultText AdnW
       , layout = AdnW
       , position = 0
       }
@@ -136,7 +136,7 @@ view model =
                 , textarea
                     [ value model.text
                     , onInput TextChanged
-                    , css [ width (pct 100), height (px 200) ]
+                    , css [ width (pct 100), height (px 300) ]
                     ]
                     []
                 ]
@@ -523,3 +523,6 @@ layoutConversionKOY =
         , ( 'M', ':' )
         , ( 'J', '_' )
         ]
+
+defaultText: String
+defaultText = """der die das in und sein ein zu von haben werden mit an für auf sich nicht es auch er als Jahr neu sein Euro groß haben Uhr erst werden Prozent viel können Deutschland ander müssen Zeit deutsch sagen Tag weit sollen Mensch gut geben Land klein wollen Million eigen kommen Kind letzt gehen Frau hoch machen Mann alt stehen Unternehmen jung lassen Stadt einig sehen Ende zweit finden Berlin vergangen bleiben Woche lange liegen Fall nah zeigen Seite wenig dürfen Mann ander sein Frau klein haben Hand groß werden Tag erst können Auge gut sagen Zeit alt sehen Jahr ganz müssen Kopf lang wollen Gesicht letzt kommen Mutter neu gehen Vater weit machen Kind viel geben Haus einig lassen Blick jung sollen Leben nahe stehen Mensch gerade wissen Tür eigen fragen Wort spät tun Stimme einzig nehmen Herr lieb hören"""
