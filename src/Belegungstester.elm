@@ -25,6 +25,9 @@ main =
 type Layout
     = Neo
     | AdnW
+    | Dvorak
+    | KOY
+    | Bone
 
 
 type alias Model =
@@ -39,7 +42,7 @@ init : flags -> ( Model, Cmd msg )
 init _ =
     ( { text = ""
       , convertedText = ""
-      , layout = Neo
+      , layout = AdnW
       , position = 0
       }
     , Cmd.none
@@ -71,10 +74,19 @@ update msg model =
 
                 LayoutChanged newLayout ->
                     if newLayout == "Neo" then
-                        { model | layout = Neo, convertedText = convertText model.text Neo |> String.replace "\n" " ", position = 0 }
+                        { model | layout = Neo, convertedText = convertText model.text Neo, position = 0 }
 
                     else if newLayout == "AdnW" then
-                        { model | layout = AdnW, convertedText = convertText model.text AdnW |> String.replace "\n" " ", position = 0 }
+                        { model | layout = AdnW, convertedText = convertText model.text AdnW, position = 0 }
+
+                    else if newLayout == "Dvorak" then
+                        { model | layout = Dvorak, convertedText = convertText model.text Dvorak, position = 0 }
+
+                    else if newLayout == "Bone" then
+                        { model | layout = Bone, convertedText = convertText model.text Bone, position = 0 }
+
+                    else if newLayout == "KOY" then
+                        { model | layout = KOY, convertedText = convertText model.text KOY, position = 0 }
 
                     else
                         model
@@ -105,8 +117,11 @@ view model =
         , p []
             [ text "Ich tippe mit QWERTZ und würde gerne wissen, wie sich das Tippen mit "
             , select [ onInput LayoutChanged ]
-                [ option [] [ text "Neo" ]
-                , option [] [ text "AdnW" ]
+                [ option [] [ text "AdnW" ]
+                , option [] [ text "Bone" ]
+                , option [] [ text "Dvorak" ]
+                , option [] [ text "KOY" ]
+                , option [] [ text "Neo" ]
                 ]
             , text " anfühlt."
             ]
@@ -149,8 +164,18 @@ convertText originalText layout =
 
                 AdnW ->
                     Maybe.withDefault input (Dict.get input layoutConversionAdnW)
+
+                Dvorak ->
+                    Maybe.withDefault input (Dict.get input layoutConversionDvorak)
+
+                KOY ->
+                    Maybe.withDefault input (Dict.get input layoutConversionKOY)
+
+                Bone ->
+                    Maybe.withDefault input (Dict.get input layoutConversionBone)
     in
     String.map replaceCharacter originalText
+        |> String.replace "\n" " "
 
 
 
@@ -260,7 +285,7 @@ layoutConversionAdnW =
         , ( ',', 'v' )
         , ( 'q', 'b' )
         , ( 'p', 'n' )
-        , ( 'p', 'm' )
+        , ( 'b', 'm' )
         , ( 'w', ',' )
         , ( 'm', '.' )
         , ( 'z', '-' )
@@ -288,9 +313,213 @@ layoutConversionAdnW =
         , ( 'Y', 'X' )
         , ( 'Ö', 'C' )
         , ( 'Q', 'B' )
-        , ( 'P', 'N' )
+        , ( 'B', 'N' )
         , ( 'P', 'M' )
         , ( 'W', ';' )
         , ( 'M', ':' )
         , ( 'Z', '_' )
+        ]
+
+
+layoutConversionDvorak : Dict Char Char
+layoutConversionDvorak =
+    Dict.fromList
+        [ ( 'ü', 'q' )
+        , ( ',', 'w' )
+        , ( '.', 'e' )
+        , ( 'p', 'r' )
+        , ( 'y', 't' )
+        , ( 'f', 'z' )
+        , ( 'g', 'u' )
+        , ( 'c', 'i' )
+        , ( 't', 'o' )
+        , ( 'z', 'p' )
+        , ( '?', 'ü' )
+        , ( '/', '+' )
+        , ( 'o', 's' )
+        , ( 'e', 'd' )
+        , ( 'i', 'f' )
+        , ( 'u', 'g' )
+        , ( 'd', 'j' )
+        , ( 'r', 'k' )
+        , ( 'n', 'l' )
+        , ( 's', 'ö' )
+        , ( 'l', 'ä' )
+        , ( '-', '#' )
+        , ( 'ä', '<' )
+        , ( 'ö', 'y' )
+        , ( 'q', 'x' )
+        , ( 'j', 'c' )
+        , ( 'k', 'v' )
+        , ( 'x', 'b' )
+        , ( 'b', 'n' )
+        , ( 'w', ',' )
+        , ( 'v', '.' )
+        , ( '#', '-' )
+        , ( 'Ü', 'Q' )
+        , ( ';', 'W' )
+        , ( ':', 'E' )
+        , ( 'P', 'R' )
+        , ( 'Y', 'T' )
+        , ( 'F', 'Z' )
+        , ( 'G', 'U' )
+        , ( 'C', 'I' )
+        , ( 'T', 'O' )
+        , ( 'Z', 'P' )
+        , ( 'ß', 'Ü' )
+        , ( '\\', '*' )
+        , ( 'O', 'S' )
+        , ( 'E', 'D' )
+        , ( 'I', 'F' )
+        , ( 'U', 'G' )
+        , ( 'D', 'J' )
+        , ( 'R', 'K' )
+        , ( 'N', 'L' )
+        , ( 'S', 'Ö' )
+        , ( 'L', 'Ä' )
+        , ( '_', '\'' )
+        , ( 'Ä', '>' )
+        , ( 'Ö', 'Y' )
+        , ( 'Q', 'X' )
+        , ( 'J', 'C' )
+        , ( 'K', 'V' )
+        , ( 'X', 'B' )
+        , ( 'B', 'N' )
+        , ( 'W', ';' )
+        , ( 'V', ':' )
+        , ( '\'', '_' )
+        ]
+
+
+layoutConversionBone : Dict Char Char
+layoutConversionBone =
+    Dict.fromList
+        [ ( 'j', 'q' )
+        , ( 'd', 'w' )
+        , ( 'u', 'e' )
+        , ( 'a', 'r' )
+        , ( 'x', 't' )
+        , ( 'p', 'z' )
+        , ( 'h', 'u' )
+        , ( 'l', 'i' )
+        , ( 'm', 'o' )
+        , ( 'w', 'p' )
+        , ( 'ß', 'ü' )
+        , ( 'c', 'a' )
+        , ( 't', 's' )
+        , ( 'i', 'd' )
+        , ( 'e', 'f' )
+        , ( 'o', 'g' )
+        , ( 'b', 'h' )
+        , ( 'n', 'j' )
+        , ( 'r', 'k' )
+        , ( 's', 'l' )
+        , ( 'g', 'ö' )
+        , ( 'q', 'ä' )
+        , ( 'f', 'y' )
+        , ( 'v', 'x' )
+        , ( 'ü', 'c' )
+        , ( 'ä', 'v' )
+        , ( 'ö', 'b' )
+        , ( 'y', 'n' )
+        , ( 'z', 'm' )
+        , ( 'k', '-' )
+        , ( 'J', 'Q' )
+        , ( 'D', 'W' )
+        , ( 'U', 'E' )
+        , ( 'A', 'R' )
+        , ( 'X', 'T' )
+        , ( 'P', 'Z' )
+        , ( 'H', 'U' )
+        , ( 'L', 'I' )
+        , ( 'M', 'O' )
+        , ( 'W', 'P' )
+        , ( 'ẞ', 'Ü' )
+        , ( 'C', 'A' )
+        , ( 'T', 'S' )
+        , ( 'I', 'D' )
+        , ( 'E', 'F' )
+        , ( 'O', 'G' )
+        , ( 'B', 'H' )
+        , ( 'N', 'J' )
+        , ( 'R', 'K' )
+        , ( 'S', 'L' )
+        , ( 'G', 'Ö' )
+        , ( 'Q', 'Ä' )
+        , ( 'F', 'Y' )
+        , ( 'V', 'X' )
+        , ( 'Ü', 'C' )
+        , ( 'Ä', 'V' )
+        , ( 'Ö', 'B' )
+        , ( 'Y', 'N' )
+        , ( 'Z', 'M' )
+        , ( 'K', '_' )
+        ]
+
+
+layoutConversionKOY : Dict Char Char
+layoutConversionKOY =
+    Dict.fromList
+        [ ( 'k', 'q' )
+        , ( '.', 'w' )
+        , ( 'o', 'e' )
+        , ( ',', 'r' )
+        , ( 'y', 't' )
+        , ( 'v', 'z' )
+        , ( 'g', 'u' )
+        , ( 'c', 'i' )
+        , ( 'l', 'o' )
+        , ( 'ß', 'p' )
+        , ( 'z', 'ü' )
+        , ( 'h', 'a' )
+        , ( 'a', 's' )
+        , ( 'e', 'd' )
+        , ( 'i', 'f' )
+        , ( 'u', 'g' )
+        , ( 'd', 'h' )
+        , ( 't', 'j' )
+        , ( 'r', 'k' )
+        , ( 'n', 'l' )
+        , ( 's', 'ö' )
+        , ( 'f', 'ä' )
+        , ( 'x', 'y' )
+        , ( 'q', 'x' )
+        , ( 'ä', 'c' )
+        , ( 'ü', 'v' )
+        , ( 'ö', 'b' )
+        , ( 'b', 'n' )
+        , ( 'p', 'm' )
+        , ( 'w', ',' )
+        , ( 'm', '.' )
+        , ( 'j', '-' )
+        , ( 'K', 'Q' )
+        , ( 'O', 'E' )
+        , ( 'Y', 'T' )
+        , ( 'V', 'Z' )
+        , ( 'G', 'U' )
+        , ( 'C', 'I' )
+        , ( 'L', 'O' )
+        , ( 'ẞ', 'P' )
+        , ( 'Z', 'Ü' )
+        , ( 'H', 'A' )
+        , ( 'A', 'S' )
+        , ( 'E', 'D' )
+        , ( 'I', 'F' )
+        , ( 'U', 'G' )
+        , ( 'D', 'H' )
+        , ( 'T', 'J' )
+        , ( 'R', 'K' )
+        , ( 'N', 'L' )
+        , ( 'S', 'Ö' )
+        , ( 'F', 'Ä' )
+        , ( 'X', 'Y' )
+        , ( 'Q', 'X' )
+        , ( 'Ä', 'C' )
+        , ( 'Ü', 'V' )
+        , ( 'Ö', 'B' )
+        , ( 'B', 'N' )
+        , ( 'P', 'M' )
+        , ( 'W', ';' )
+        , ( 'M', ':' )
+        , ( 'J', '_' )
         ]

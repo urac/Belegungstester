@@ -2718,7 +2718,7 @@ var _VirtualDom_mapEventTuple = F2(function(func, tuple)
 var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
-		G: func(record.G),
+		J: func(record.J),
 		a4: record.a4,
 		a1: record.a1
 	}
@@ -2988,7 +2988,7 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 		// 3 = Custom
 
 		var value = result.a;
-		var message = !tag ? value : tag < 3 ? value.a : value.G;
+		var message = !tag ? value : tag < 3 ? value.a : value.J;
 		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.a4;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
@@ -5194,12 +5194,12 @@ var $elm$core$Task$perform = F2(
 			A2($elm$core$Task$map, toMessage, task));
 	});
 var $elm$browser$Browser$element = _Browser_element;
-var $author$project$Belegungstester$Neo = 0;
+var $author$project$Belegungstester$AdnW = 1;
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $author$project$Belegungstester$init = function (_v0) {
 	return _Utils_Tuple2(
-		{L: '', aw: 0, p: 0, T: ''},
+		{s: '', H: 1, k: 0, w: ''},
 		$elm$core$Platform$Cmd$none);
 };
 var $author$project$Belegungstester$KeyDown = function (a) {
@@ -6110,7 +6110,7 @@ var $rtfeldman$elm_css$Css$Structure$Output$mediaExpressionToString = function (
 		A2(
 			$elm$core$Maybe$map,
 			$elm$core$Basics$append(': '),
-			expression.z)) + ')'));
+			expression.B)) + ')'));
 };
 var $rtfeldman$elm_css$Css$Structure$Output$mediaTypeToString = function (mediaType) {
 	switch (mediaType) {
@@ -6786,7 +6786,7 @@ var $rtfeldman$elm_css$Css$Structure$concatMapLastStyleBlock = F2(
 var $elm$core$String$cons = _String_cons;
 var $Skinney$murmur3$Murmur3$HashData = F4(
 	function (shift, seed, hash, charsProcessed) {
-		return {Z: charsProcessed, ae: hash, S: seed, aj: shift};
+		return {_: charsProcessed, af: hash, U: seed, ak: shift};
 	});
 var $Skinney$murmur3$Murmur3$c1 = 3432918353;
 var $Skinney$murmur3$Murmur3$c2 = 461845907;
@@ -6805,14 +6805,14 @@ var $Skinney$murmur3$Murmur3$rotlBy = F2(
 	});
 var $elm$core$Bitwise$xor = _Bitwise_xor;
 var $Skinney$murmur3$Murmur3$finalize = function (data) {
-	var acc = (!(!data.ae)) ? (data.S ^ A2(
+	var acc = (!(!data.af)) ? (data.U ^ A2(
 		$Skinney$murmur3$Murmur3$multiplyBy,
 		$Skinney$murmur3$Murmur3$c2,
 		A2(
 			$Skinney$murmur3$Murmur3$rotlBy,
 			15,
-			A2($Skinney$murmur3$Murmur3$multiplyBy, $Skinney$murmur3$Murmur3$c1, data.ae)))) : data.S;
-	var h0 = acc ^ data.Z;
+			A2($Skinney$murmur3$Murmur3$multiplyBy, $Skinney$murmur3$Murmur3$c1, data.af)))) : data.U;
+	var h0 = acc ^ data._;
 	var h1 = A2($Skinney$murmur3$Murmur3$multiplyBy, 2246822507, h0 ^ (h0 >>> 16));
 	var h2 = A2($Skinney$murmur3$Murmur3$multiplyBy, 3266489909, h1 ^ (h1 >>> 13));
 	return (h2 ^ (h2 >>> 16)) >>> 0;
@@ -6836,17 +6836,17 @@ var $Skinney$murmur3$Murmur3$mix = F2(
 	});
 var $Skinney$murmur3$Murmur3$hashFold = F2(
 	function (c, data) {
-		var res = data.ae | ((255 & $elm$core$Char$toCode(c)) << data.aj);
-		var _v0 = data.aj;
+		var res = data.af | ((255 & $elm$core$Char$toCode(c)) << data.ak);
+		var _v0 = data.ak;
 		if (_v0 === 24) {
 			return {
-				Z: data.Z + 1,
-				ae: 0,
-				S: A2($Skinney$murmur3$Murmur3$mix, data.S, res),
-				aj: 0
+				_: data._ + 1,
+				af: 0,
+				U: A2($Skinney$murmur3$Murmur3$mix, data.U, res),
+				ak: 0
 			};
 		} else {
-			return {Z: data.Z + 1, ae: res, S: data.S, aj: data.aj + 8};
+			return {_: data._ + 1, af: res, U: data.U, ak: data.ak + 8};
 		}
 	});
 var $Skinney$murmur3$Murmur3$hashString = F2(
@@ -7835,7 +7835,10 @@ var $rtfeldman$elm_css$VirtualDom$Styled$toUnstyled = function (vdom) {
 	}
 };
 var $rtfeldman$elm_css$Html$Styled$toUnstyled = $rtfeldman$elm_css$VirtualDom$Styled$toUnstyled;
-var $author$project$Belegungstester$AdnW = 1;
+var $author$project$Belegungstester$Bone = 4;
+var $author$project$Belegungstester$Dvorak = 2;
+var $author$project$Belegungstester$KOY = 3;
+var $author$project$Belegungstester$Neo = 0;
 var $elm$core$Dict$get = F2(
 	function (targetKey, dict) {
 		get:
@@ -7898,7 +7901,7 @@ var $author$project$Belegungstester$layoutConversionAdnW = $elm$core$Dict$fromLi
 			_Utils_Tuple2(',', 'v'),
 			_Utils_Tuple2('q', 'b'),
 			_Utils_Tuple2('p', 'n'),
-			_Utils_Tuple2('p', 'm'),
+			_Utils_Tuple2('b', 'm'),
 			_Utils_Tuple2('w', ','),
 			_Utils_Tuple2('m', '.'),
 			_Utils_Tuple2('z', '-'),
@@ -7926,11 +7929,209 @@ var $author$project$Belegungstester$layoutConversionAdnW = $elm$core$Dict$fromLi
 			_Utils_Tuple2('Y', 'X'),
 			_Utils_Tuple2('Ö', 'C'),
 			_Utils_Tuple2('Q', 'B'),
-			_Utils_Tuple2('P', 'N'),
+			_Utils_Tuple2('B', 'N'),
 			_Utils_Tuple2('P', 'M'),
 			_Utils_Tuple2('W', ';'),
 			_Utils_Tuple2('M', ':'),
 			_Utils_Tuple2('Z', '_')
+		]));
+var $author$project$Belegungstester$layoutConversionBone = $elm$core$Dict$fromList(
+	_List_fromArray(
+		[
+			_Utils_Tuple2('j', 'q'),
+			_Utils_Tuple2('d', 'w'),
+			_Utils_Tuple2('u', 'e'),
+			_Utils_Tuple2('a', 'r'),
+			_Utils_Tuple2('x', 't'),
+			_Utils_Tuple2('p', 'z'),
+			_Utils_Tuple2('h', 'u'),
+			_Utils_Tuple2('l', 'i'),
+			_Utils_Tuple2('m', 'o'),
+			_Utils_Tuple2('w', 'p'),
+			_Utils_Tuple2('ß', 'ü'),
+			_Utils_Tuple2('c', 'a'),
+			_Utils_Tuple2('t', 's'),
+			_Utils_Tuple2('i', 'd'),
+			_Utils_Tuple2('e', 'f'),
+			_Utils_Tuple2('o', 'g'),
+			_Utils_Tuple2('b', 'h'),
+			_Utils_Tuple2('n', 'j'),
+			_Utils_Tuple2('r', 'k'),
+			_Utils_Tuple2('s', 'l'),
+			_Utils_Tuple2('g', 'ö'),
+			_Utils_Tuple2('q', 'ä'),
+			_Utils_Tuple2('f', 'y'),
+			_Utils_Tuple2('v', 'x'),
+			_Utils_Tuple2('ü', 'c'),
+			_Utils_Tuple2('ä', 'v'),
+			_Utils_Tuple2('ö', 'b'),
+			_Utils_Tuple2('y', 'n'),
+			_Utils_Tuple2('z', 'm'),
+			_Utils_Tuple2('k', '-'),
+			_Utils_Tuple2('J', 'Q'),
+			_Utils_Tuple2('D', 'W'),
+			_Utils_Tuple2('U', 'E'),
+			_Utils_Tuple2('A', 'R'),
+			_Utils_Tuple2('X', 'T'),
+			_Utils_Tuple2('P', 'Z'),
+			_Utils_Tuple2('H', 'U'),
+			_Utils_Tuple2('L', 'I'),
+			_Utils_Tuple2('M', 'O'),
+			_Utils_Tuple2('W', 'P'),
+			_Utils_Tuple2('ẞ', 'Ü'),
+			_Utils_Tuple2('C', 'A'),
+			_Utils_Tuple2('T', 'S'),
+			_Utils_Tuple2('I', 'D'),
+			_Utils_Tuple2('E', 'F'),
+			_Utils_Tuple2('O', 'G'),
+			_Utils_Tuple2('B', 'H'),
+			_Utils_Tuple2('N', 'J'),
+			_Utils_Tuple2('R', 'K'),
+			_Utils_Tuple2('S', 'L'),
+			_Utils_Tuple2('G', 'Ö'),
+			_Utils_Tuple2('Q', 'Ä'),
+			_Utils_Tuple2('F', 'Y'),
+			_Utils_Tuple2('V', 'X'),
+			_Utils_Tuple2('Ü', 'C'),
+			_Utils_Tuple2('Ä', 'V'),
+			_Utils_Tuple2('Ö', 'B'),
+			_Utils_Tuple2('Y', 'N'),
+			_Utils_Tuple2('Z', 'M'),
+			_Utils_Tuple2('K', '_')
+		]));
+var $author$project$Belegungstester$layoutConversionDvorak = $elm$core$Dict$fromList(
+	_List_fromArray(
+		[
+			_Utils_Tuple2('ü', 'q'),
+			_Utils_Tuple2(',', 'w'),
+			_Utils_Tuple2('.', 'e'),
+			_Utils_Tuple2('p', 'r'),
+			_Utils_Tuple2('y', 't'),
+			_Utils_Tuple2('f', 'z'),
+			_Utils_Tuple2('g', 'u'),
+			_Utils_Tuple2('c', 'i'),
+			_Utils_Tuple2('t', 'o'),
+			_Utils_Tuple2('z', 'p'),
+			_Utils_Tuple2('?', 'ü'),
+			_Utils_Tuple2('/', '+'),
+			_Utils_Tuple2('o', 's'),
+			_Utils_Tuple2('e', 'd'),
+			_Utils_Tuple2('i', 'f'),
+			_Utils_Tuple2('u', 'g'),
+			_Utils_Tuple2('d', 'j'),
+			_Utils_Tuple2('r', 'k'),
+			_Utils_Tuple2('n', 'l'),
+			_Utils_Tuple2('s', 'ö'),
+			_Utils_Tuple2('l', 'ä'),
+			_Utils_Tuple2('-', '#'),
+			_Utils_Tuple2('ä', '<'),
+			_Utils_Tuple2('ö', 'y'),
+			_Utils_Tuple2('q', 'x'),
+			_Utils_Tuple2('j', 'c'),
+			_Utils_Tuple2('k', 'v'),
+			_Utils_Tuple2('x', 'b'),
+			_Utils_Tuple2('b', 'n'),
+			_Utils_Tuple2('w', ','),
+			_Utils_Tuple2('v', '.'),
+			_Utils_Tuple2('#', '-'),
+			_Utils_Tuple2('Ü', 'Q'),
+			_Utils_Tuple2(';', 'W'),
+			_Utils_Tuple2(':', 'E'),
+			_Utils_Tuple2('P', 'R'),
+			_Utils_Tuple2('Y', 'T'),
+			_Utils_Tuple2('F', 'Z'),
+			_Utils_Tuple2('G', 'U'),
+			_Utils_Tuple2('C', 'I'),
+			_Utils_Tuple2('T', 'O'),
+			_Utils_Tuple2('Z', 'P'),
+			_Utils_Tuple2('ß', 'Ü'),
+			_Utils_Tuple2('\\', '*'),
+			_Utils_Tuple2('O', 'S'),
+			_Utils_Tuple2('E', 'D'),
+			_Utils_Tuple2('I', 'F'),
+			_Utils_Tuple2('U', 'G'),
+			_Utils_Tuple2('D', 'J'),
+			_Utils_Tuple2('R', 'K'),
+			_Utils_Tuple2('N', 'L'),
+			_Utils_Tuple2('S', 'Ö'),
+			_Utils_Tuple2('L', 'Ä'),
+			_Utils_Tuple2('_', '\''),
+			_Utils_Tuple2('Ä', '>'),
+			_Utils_Tuple2('Ö', 'Y'),
+			_Utils_Tuple2('Q', 'X'),
+			_Utils_Tuple2('J', 'C'),
+			_Utils_Tuple2('K', 'V'),
+			_Utils_Tuple2('X', 'B'),
+			_Utils_Tuple2('B', 'N'),
+			_Utils_Tuple2('W', ';'),
+			_Utils_Tuple2('V', ':'),
+			_Utils_Tuple2('\'', '_')
+		]));
+var $author$project$Belegungstester$layoutConversionKOY = $elm$core$Dict$fromList(
+	_List_fromArray(
+		[
+			_Utils_Tuple2('k', 'q'),
+			_Utils_Tuple2('.', 'w'),
+			_Utils_Tuple2('o', 'e'),
+			_Utils_Tuple2(',', 'r'),
+			_Utils_Tuple2('y', 't'),
+			_Utils_Tuple2('v', 'z'),
+			_Utils_Tuple2('g', 'u'),
+			_Utils_Tuple2('c', 'i'),
+			_Utils_Tuple2('l', 'o'),
+			_Utils_Tuple2('ß', 'p'),
+			_Utils_Tuple2('z', 'ü'),
+			_Utils_Tuple2('h', 'a'),
+			_Utils_Tuple2('a', 's'),
+			_Utils_Tuple2('e', 'd'),
+			_Utils_Tuple2('i', 'f'),
+			_Utils_Tuple2('u', 'g'),
+			_Utils_Tuple2('d', 'h'),
+			_Utils_Tuple2('t', 'j'),
+			_Utils_Tuple2('r', 'k'),
+			_Utils_Tuple2('n', 'l'),
+			_Utils_Tuple2('s', 'ö'),
+			_Utils_Tuple2('f', 'ä'),
+			_Utils_Tuple2('x', 'y'),
+			_Utils_Tuple2('q', 'x'),
+			_Utils_Tuple2('ä', 'c'),
+			_Utils_Tuple2('ü', 'v'),
+			_Utils_Tuple2('ö', 'b'),
+			_Utils_Tuple2('b', 'n'),
+			_Utils_Tuple2('p', 'm'),
+			_Utils_Tuple2('w', ','),
+			_Utils_Tuple2('m', '.'),
+			_Utils_Tuple2('j', '-'),
+			_Utils_Tuple2('K', 'Q'),
+			_Utils_Tuple2('O', 'E'),
+			_Utils_Tuple2('Y', 'T'),
+			_Utils_Tuple2('V', 'Z'),
+			_Utils_Tuple2('G', 'U'),
+			_Utils_Tuple2('C', 'I'),
+			_Utils_Tuple2('L', 'O'),
+			_Utils_Tuple2('ẞ', 'P'),
+			_Utils_Tuple2('Z', 'Ü'),
+			_Utils_Tuple2('H', 'A'),
+			_Utils_Tuple2('A', 'S'),
+			_Utils_Tuple2('E', 'D'),
+			_Utils_Tuple2('I', 'F'),
+			_Utils_Tuple2('U', 'G'),
+			_Utils_Tuple2('D', 'H'),
+			_Utils_Tuple2('T', 'J'),
+			_Utils_Tuple2('R', 'K'),
+			_Utils_Tuple2('N', 'L'),
+			_Utils_Tuple2('S', 'Ö'),
+			_Utils_Tuple2('F', 'Ä'),
+			_Utils_Tuple2('X', 'Y'),
+			_Utils_Tuple2('Q', 'X'),
+			_Utils_Tuple2('Ä', 'C'),
+			_Utils_Tuple2('Ü', 'V'),
+			_Utils_Tuple2('Ö', 'B'),
+			_Utils_Tuple2('B', 'N'),
+			_Utils_Tuple2('P', 'M'),
+			_Utils_Tuple2('W', ';'),
+			_Utils_Tuple2('M', ':'),
+			_Utils_Tuple2('J', '_')
 		]));
 var $author$project$Belegungstester$layoutConversionNeo = $elm$core$Dict$fromList(
 	_List_fromArray(
@@ -7994,28 +8195,6 @@ var $author$project$Belegungstester$layoutConversionNeo = $elm$core$Dict$fromLis
 			_Utils_Tuple2('J', '_')
 		]));
 var $elm$core$String$map = _String_map;
-var $author$project$Belegungstester$convertText = F2(
-	function (originalText, layout) {
-		var replaceCharacter = function (input) {
-			if (!layout) {
-				return A2(
-					$elm$core$Maybe$withDefault,
-					input,
-					A2($elm$core$Dict$get, input, $author$project$Belegungstester$layoutConversionNeo));
-			} else {
-				return A2(
-					$elm$core$Maybe$withDefault,
-					input,
-					A2($elm$core$Dict$get, input, $author$project$Belegungstester$layoutConversionAdnW));
-			}
-		};
-		return A2($elm$core$String$map, replaceCharacter, originalText);
-	});
-var $elm$core$Basics$ge = _Utils_ge;
-var $ohanhi$keyboard$Keyboard$rawValue = function (_v0) {
-	var key = _v0;
-	return key;
-};
 var $elm$core$String$replace = F3(
 	function (before, after, string) {
 		return A2(
@@ -8023,6 +8202,48 @@ var $elm$core$String$replace = F3(
 			after,
 			A2($elm$core$String$split, before, string));
 	});
+var $author$project$Belegungstester$convertText = F2(
+	function (originalText, layout) {
+		var replaceCharacter = function (input) {
+			switch (layout) {
+				case 0:
+					return A2(
+						$elm$core$Maybe$withDefault,
+						input,
+						A2($elm$core$Dict$get, input, $author$project$Belegungstester$layoutConversionNeo));
+				case 1:
+					return A2(
+						$elm$core$Maybe$withDefault,
+						input,
+						A2($elm$core$Dict$get, input, $author$project$Belegungstester$layoutConversionAdnW));
+				case 2:
+					return A2(
+						$elm$core$Maybe$withDefault,
+						input,
+						A2($elm$core$Dict$get, input, $author$project$Belegungstester$layoutConversionDvorak));
+				case 3:
+					return A2(
+						$elm$core$Maybe$withDefault,
+						input,
+						A2($elm$core$Dict$get, input, $author$project$Belegungstester$layoutConversionKOY));
+				default:
+					return A2(
+						$elm$core$Maybe$withDefault,
+						input,
+						A2($elm$core$Dict$get, input, $author$project$Belegungstester$layoutConversionBone));
+			}
+		};
+		return A3(
+			$elm$core$String$replace,
+			'\n',
+			' ',
+			A2($elm$core$String$map, replaceCharacter, originalText));
+	});
+var $elm$core$Basics$ge = _Utils_ge;
+var $ohanhi$keyboard$Keyboard$rawValue = function (_v0) {
+	var key = _v0;
+	return key;
+};
 var $author$project$Belegungstester$update = F2(
 	function (msg, model) {
 		var newModel = function () {
@@ -8033,44 +8254,54 @@ var $author$project$Belegungstester$update = F2(
 						$elm$core$String$replace,
 						'\n',
 						' ',
-						A2($author$project$Belegungstester$convertText, newText, model.aw));
+						A2($author$project$Belegungstester$convertText, newText, model.H));
 					return _Utils_update(
 						model,
-						{L: newConvertedText, p: 0, T: newText});
+						{s: newConvertedText, k: 0, w: newText});
 				case 1:
 					var newLayout = msg.a;
 					return (newLayout === 'Neo') ? _Utils_update(
 						model,
 						{
-							L: A3(
-								$elm$core$String$replace,
-								'\n',
-								' ',
-								A2($author$project$Belegungstester$convertText, model.T, 0)),
-							aw: 0,
-							p: 0
+							s: A2($author$project$Belegungstester$convertText, model.w, 0),
+							H: 0,
+							k: 0
 						}) : ((newLayout === 'AdnW') ? _Utils_update(
 						model,
 						{
-							L: A3(
-								$elm$core$String$replace,
-								'\n',
-								' ',
-								A2($author$project$Belegungstester$convertText, model.T, 1)),
-							aw: 1,
-							p: 0
-						}) : model);
+							s: A2($author$project$Belegungstester$convertText, model.w, 1),
+							H: 1,
+							k: 0
+						}) : ((newLayout === 'Dvorak') ? _Utils_update(
+						model,
+						{
+							s: A2($author$project$Belegungstester$convertText, model.w, 2),
+							H: 2,
+							k: 0
+						}) : ((newLayout === 'Bone') ? _Utils_update(
+						model,
+						{
+							s: A2($author$project$Belegungstester$convertText, model.w, 4),
+							H: 4,
+							k: 0
+						}) : ((newLayout === 'KOY') ? _Utils_update(
+						model,
+						{
+							s: A2($author$project$Belegungstester$convertText, model.w, 3),
+							H: 3,
+							k: 0
+						}) : model))));
 				default:
 					var key = msg.a;
 					return _Utils_eq(
 						$ohanhi$keyboard$Keyboard$rawValue(key),
-						A3($elm$core$String$slice, model.p, model.p + 1, model.L)) ? ((_Utils_cmp(
-						model.p,
-						$elm$core$String$length(model.T) - 1) > -1) ? _Utils_update(
+						A3($elm$core$String$slice, model.k, model.k + 1, model.s)) ? ((_Utils_cmp(
+						model.k,
+						$elm$core$String$length(model.w) - 1) > -1) ? _Utils_update(
 						model,
-						{p: 0}) : _Utils_update(
+						{k: 0}) : _Utils_update(
 						model,
-						{p: model.p + 1})) : model;
+						{k: model.k + 1})) : model;
 			}
 		}();
 		return _Utils_Tuple2(newModel, $elm$core$Platform$Cmd$none);
@@ -8082,7 +8313,7 @@ var $author$project$Belegungstester$TextChanged = function (a) {
 	return {$: 0, a: a};
 };
 var $rtfeldman$elm_css$Css$Structure$Compatible = 0;
-var $rtfeldman$elm_css$Css$auto = {bU: 0, a: 0, ab: 0, aL: 0, b6: 0, af: 0, F: 0, x: 0, ai: 0, u: 0, aT: 0, an: 0, q: 0, z: 'auto'};
+var $rtfeldman$elm_css$Css$auto = {bU: 0, a: 0, ac: 0, aL: 0, b6: 0, ag: 0, I: 0, z: 0, aj: 0, v: 0, aT: 0, ao: 0, q: 0, B: 'auto'};
 var $rtfeldman$elm_css$VirtualDom$Styled$Attribute = F3(
 	function (a, b, c) {
 		return {$: 0, a: a, b: b, c: c};
@@ -8139,7 +8370,7 @@ var $rtfeldman$elm_css$Html$Styled$node = $rtfeldman$elm_css$VirtualDom$Styled$n
 var $rtfeldman$elm_css$Html$Styled$div = $rtfeldman$elm_css$Html$Styled$node('div');
 var $rtfeldman$elm_css$Css$prop1 = F2(
 	function (key, arg) {
-		return A2($rtfeldman$elm_css$Css$property, key, arg.z);
+		return A2($rtfeldman$elm_css$Css$property, key, arg.B);
 	});
 var $rtfeldman$elm_css$Css$flex = $rtfeldman$elm_css$Css$prop1('flex');
 var $rtfeldman$elm_css$Html$Styled$h1 = $rtfeldman$elm_css$Html$Styled$node('h1');
@@ -8156,7 +8387,7 @@ var $rtfeldman$elm_css$Css$prop2 = F3(
 				$elm$core$String$join,
 				' ',
 				_List_fromArray(
-					[argA.z, argB.z])));
+					[argA.B, argB.B])));
 	});
 var $rtfeldman$elm_css$Css$border2 = $rtfeldman$elm_css$Css$prop2('border');
 var $rtfeldman$elm_css$Css$PxUnits = 0;
@@ -8166,27 +8397,27 @@ var $rtfeldman$elm_css$Css$Internal$lengthConverter = F3(
 		return {
 			a6: 0,
 			bf: 0,
-			ab: 0,
-			k: 0,
+			ac: 0,
+			l: 0,
 			ax: 0,
-			af: 0,
-			F: 0,
 			ag: 0,
+			I: 0,
 			ah: 0,
-			O: 0,
-			P: 0,
-			x: 0,
-			H: numericValue,
-			am: 0,
-			ao: unitLabel,
+			ai: 0,
+			Q: 0,
+			R: 0,
+			z: 0,
+			K: numericValue,
+			an: 0,
+			ap: unitLabel,
 			aF: units,
-			z: _Utils_ap(
+			B: _Utils_ap(
 				$elm$core$String$fromFloat(numericValue),
 				unitLabel)
 		};
 	});
 var $rtfeldman$elm_css$Css$px = A2($rtfeldman$elm_css$Css$Internal$lengthConverter, 0, 'px');
-var $rtfeldman$elm_css$Css$solid = {m: 0, U: 0, z: 'solid'};
+var $rtfeldman$elm_css$Css$solid = {n: 0, V: 0, B: 'solid'};
 var $rtfeldman$elm_css$Html$Styled$span = $rtfeldman$elm_css$Html$Styled$node('span');
 var $rtfeldman$elm_css$VirtualDom$Styled$Unstyled = function (a) {
 	return {$: 4, a: a};
@@ -8235,14 +8466,14 @@ var $rtfeldman$elm_css$Css$maxWidth = $rtfeldman$elm_css$Css$prop1('max-width');
 var $rtfeldman$elm_css$Css$UnitlessFloat = 0;
 var $rtfeldman$elm_css$Css$num = function (val) {
 	return {
-		P: 0,
-		x: 0,
+		R: 0,
+		z: 0,
 		az: 0,
 		aN: 0,
-		H: val,
-		ao: '',
+		K: val,
+		ap: '',
 		aF: 0,
-		z: $elm$core$String$fromFloat(val)
+		B: $elm$core$String$fromFloat(val)
 	};
 };
 var $rtfeldman$elm_css$Html$Styled$Events$alwaysStop = function (x) {
@@ -8352,14 +8583,35 @@ var $author$project$Belegungstester$view = function (model) {
 								_List_Nil,
 								_List_fromArray(
 									[
-										$rtfeldman$elm_css$Html$Styled$text('Neo')
+										$rtfeldman$elm_css$Html$Styled$text('AdnW')
 									])),
 								A2(
 								$rtfeldman$elm_css$Html$Styled$option,
 								_List_Nil,
 								_List_fromArray(
 									[
-										$rtfeldman$elm_css$Html$Styled$text('AdnW')
+										$rtfeldman$elm_css$Html$Styled$text('Bone')
+									])),
+								A2(
+								$rtfeldman$elm_css$Html$Styled$option,
+								_List_Nil,
+								_List_fromArray(
+									[
+										$rtfeldman$elm_css$Html$Styled$text('Dvorak')
+									])),
+								A2(
+								$rtfeldman$elm_css$Html$Styled$option,
+								_List_Nil,
+								_List_fromArray(
+									[
+										$rtfeldman$elm_css$Html$Styled$text('KOY')
+									])),
+								A2(
+								$rtfeldman$elm_css$Html$Styled$option,
+								_List_Nil,
+								_List_fromArray(
+									[
+										$rtfeldman$elm_css$Html$Styled$text('Neo')
 									]))
 							])),
 						$rtfeldman$elm_css$Html$Styled$text(' anfühlt.')
@@ -8396,7 +8648,7 @@ var $author$project$Belegungstester$view = function (model) {
 									[
 										$rtfeldman$elm_css$Html$Styled$text('Eingabe')
 									])),
-								A2($author$project$Belegungstester$markPositionInText, model.p, model.L)
+								A2($author$project$Belegungstester$markPositionInText, model.k, model.s)
 							])),
 						A2(
 						$rtfeldman$elm_css$Html$Styled$div,
@@ -8422,7 +8674,7 @@ var $author$project$Belegungstester$view = function (model) {
 								$rtfeldman$elm_css$Html$Styled$textarea,
 								_List_fromArray(
 									[
-										$rtfeldman$elm_css$Html$Styled$Attributes$value(model.T),
+										$rtfeldman$elm_css$Html$Styled$Attributes$value(model.w),
 										$rtfeldman$elm_css$Html$Styled$Events$onInput($author$project$Belegungstester$TextChanged),
 										$rtfeldman$elm_css$Html$Styled$Attributes$css(
 										_List_fromArray(
