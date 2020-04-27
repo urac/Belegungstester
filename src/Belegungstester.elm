@@ -1,4 +1,4 @@
-module Main exposing (main)
+module Belegungstester exposing (main)
 
 import Browser
 import Css exposing (auto, border2, displayFlex, flex, height, margin, marginRight, maxWidth, num, padding, pct, px, solid, width)
