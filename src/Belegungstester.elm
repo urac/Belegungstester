@@ -4,7 +4,7 @@ import Browser
 import Css exposing (auto, border2, displayFlex, flex, height, margin, marginRight, maxWidth, num, padding, pct, px, solid, width)
 import Dict exposing (Dict)
 import Html.Styled exposing (Html, div, h1, h3, option, p, select, span, text, textarea, toUnstyled)
-import Html.Styled.Attributes exposing (css, value)
+import Html.Styled.Attributes exposing (css, selected, value)
 import Html.Styled.Events exposing (onInput)
 import Keyboard exposing (RawKey)
 
@@ -15,7 +15,12 @@ import Keyboard exposing (RawKey)
 
 main : Program () Model Msg
 main =
-    Browser.element { init = init, update = update, view = view >> toUnstyled, subscriptions = subscriptions }
+    Browser.element
+        { init = init
+        , update = update
+        , view = view >> toUnstyled
+        , subscriptions = subscriptions
+        }
 
 
 
@@ -23,17 +28,19 @@ main =
 
 
 type Layout
-    = Neo
-    | AdnW
+    = AdnW
+    | Bone
     | Dvorak
     | KOY
-    | Bone
+    | Neo
+    | QWERTZ
 
 
 type alias Model =
     { text : String
     , convertedText : String
-    , layout : Layout
+    , inputLayout : Layout
+    , outputLayout : Layout
     , position : Int
     }
 
@@ -41,8 +48,9 @@ type alias Model =
 init : flags -> ( Model, Cmd msg )
 init _ =
     ( { text = defaultText
-      , convertedText = convertText defaultText AdnW
-      , layout = AdnW
+      , convertedText = convertText defaultText QWERTZ Neo
+      , inputLayout = QWERTZ
+      , outputLayout = Neo
       , position = 0
       }
     , Cmd.none
@@ -55,7 +63,8 @@ init _ =
 
 type Msg
     = TextChanged String
-    | LayoutChanged String
+    | InputLayoutChanged String
+    | OutputLayoutChanged String
     | KeyDown RawKey
 
 
@@ -67,26 +76,102 @@ update msg model =
                 TextChanged newText ->
                     let
                         newConvertedText =
-                            convertText newText model.layout
-                                |> String.replace "\n" " "
+                            convertText newText model.inputLayout model.outputLayout
                     in
-                    { model | text = newText, convertedText = newConvertedText, position = 0 }
+                    { model
+                        | text = newText
+                        , convertedText = newConvertedText
+                        , position = 0
+                    }
 
-                LayoutChanged newLayout ->
-                    if newLayout == "Neo" then
-                        { model | layout = Neo, convertedText = convertText model.text Neo, position = 0 }
-
-                    else if newLayout == "AdnW" then
-                        { model | layout = AdnW, convertedText = convertText model.text AdnW, position = 0 }
-
-                    else if newLayout == "Dvorak" then
-                        { model | layout = Dvorak, convertedText = convertText model.text Dvorak, position = 0 }
+                InputLayoutChanged newLayout ->
+                    if newLayout == "AdnW" then
+                        { model
+                            | inputLayout = AdnW
+                            , convertedText = convertText model.text AdnW model.outputLayout
+                            , position = 0
+                        }
 
                     else if newLayout == "Bone" then
-                        { model | layout = Bone, convertedText = convertText model.text Bone, position = 0 }
+                        { model
+                            | inputLayout = Bone
+                            , convertedText = convertText model.text Bone model.outputLayout
+                            , position = 0
+                        }
+
+                    else if newLayout == "Dvorak" then
+                        { model
+                            | inputLayout = Dvorak
+                            , convertedText = convertText model.text Dvorak model.outputLayout
+                            , position = 0
+                        }
 
                     else if newLayout == "KOY" then
-                        { model | layout = KOY, convertedText = convertText model.text KOY, position = 0 }
+                        { model
+                            | inputLayout = KOY
+                            , convertedText = convertText model.text KOY model.outputLayout
+                            , position = 0
+                        }
+
+                    else if newLayout == "Neo" then
+                        { model
+                            | inputLayout = Neo
+                            , convertedText = convertText model.text Neo model.outputLayout
+                            , position = 0
+                        }
+
+                    else if newLayout == "QWERTZ" then
+                        { model
+                            | inputLayout = QWERTZ
+                            , convertedText = convertText model.text QWERTZ model.outputLayout
+                            , position = 0
+                        }
+
+                    else
+                        model
+
+                OutputLayoutChanged newLayout ->
+                    if newLayout == "AdnW" then
+                        { model
+                            | outputLayout = AdnW
+                            , convertedText = convertText model.text model.inputLayout AdnW
+                            , position = 0
+                        }
+
+                    else if newLayout == "Bone" then
+                        { model
+                            | outputLayout = Bone
+                            , convertedText = convertText model.text model.inputLayout Bone
+                            , position = 0
+                        }
+
+                    else if newLayout == "Dvorak" then
+                        { model
+                            | outputLayout = Dvorak
+                            , convertedText = convertText model.text model.inputLayout Dvorak
+                            , position = 0
+                        }
+
+                    else if newLayout == "KOY" then
+                        { model
+                            | outputLayout = KOY
+                            , convertedText = convertText model.text model.inputLayout KOY
+                            , position = 0
+                        }
+
+                    else if newLayout == "Neo" then
+                        { model
+                            | outputLayout = Neo
+                            , convertedText = convertText model.text model.inputLayout Neo
+                            , position = 0
+                        }
+
+                    else if newLayout == "QWERTZ" then
+                        { model
+                            | outputLayout = QWERTZ
+                            , convertedText = convertText model.text model.inputLayout QWERTZ
+                            , position = 0
+                        }
 
                     else
                         model
@@ -115,13 +200,23 @@ view model =
         [ css [ maxWidth (px 800), margin auto, padding (px 10) ] ]
         [ h1 [] [ text "Belegungstester" ]
         , p []
-            [ text "Ich tippe mit QWERTZ und würde gerne wissen, wie sich das Tippen mit "
-            , select [ onInput LayoutChanged ]
+            [ text "Ich tippe mit "
+            , select [ onInput InputLayoutChanged ]
                 [ option [] [ text "AdnW" ]
                 , option [] [ text "Bone" ]
                 , option [] [ text "Dvorak" ]
                 , option [] [ text "KOY" ]
                 , option [] [ text "Neo" ]
+                , option [ selected True ] [ text "QWERTZ" ]
+                ]
+            , text " und würde gerne wissen, wie sich das Tippen mit "
+            , select [ onInput OutputLayoutChanged ]
+                [ option [] [ text "AdnW" ]
+                , option [] [ text "Bone" ]
+                , option [] [ text "Dvorak" ]
+                , option [] [ text "KOY" ]
+                , option [ selected True ] [ text "Neo" ]
+                , option [] [ text "QWERTZ" ]
                 ]
             , text " anfühlt."
             ]
@@ -153,26 +248,137 @@ markPositionInText position givenText =
         ]
 
 
-convertText : String -> Layout -> String
-convertText originalText layout =
+convertText : String -> Layout -> Layout -> String
+convertText originalText inputLayout outputLayout =
     let
+        createConversionDict : String -> String -> Dict Char Char
+        createConversionDict inputString outputString =
+            Dict.fromList (List.map2 Tuple.pair (String.toList outputString) (String.toList inputString))
+
         replaceCharacter : Char -> Char
         replaceCharacter input =
-            case layout of
-                Neo ->
-                    Maybe.withDefault input (Dict.get input layoutConversionNeo)
+            Maybe.withDefault input <|
+                Dict.get input <|
+                    case inputLayout of
+                        AdnW ->
+                            case outputLayout of
+                                AdnW ->
+                                    Dict.empty
 
-                AdnW ->
-                    Maybe.withDefault input (Dict.get input layoutConversionAdnW)
+                                Bone ->
+                                    createConversionDict adnw bone
 
-                Dvorak ->
-                    Maybe.withDefault input (Dict.get input layoutConversionDvorak)
+                                Dvorak ->
+                                    createConversionDict adnw dvorak
 
-                KOY ->
-                    Maybe.withDefault input (Dict.get input layoutConversionKOY)
+                                KOY ->
+                                    createConversionDict adnw koy
 
-                Bone ->
-                    Maybe.withDefault input (Dict.get input layoutConversionBone)
+                                Neo ->
+                                    createConversionDict adnw neo
+
+                                QWERTZ ->
+                                    createConversionDict adnw qwertz
+
+                        Bone ->
+                            case outputLayout of
+                                AdnW ->
+                                    createConversionDict bone adnw
+
+                                Bone ->
+                                    Dict.empty
+
+                                Dvorak ->
+                                    createConversionDict bone dvorak
+
+                                KOY ->
+                                    createConversionDict bone koy
+
+                                Neo ->
+                                    createConversionDict bone neo
+
+                                QWERTZ ->
+                                    createConversionDict bone qwertz
+
+                        Dvorak ->
+                            case outputLayout of
+                                AdnW ->
+                                    createConversionDict dvorak adnw
+
+                                Bone ->
+                                    createConversionDict dvorak bone
+
+                                Dvorak ->
+                                    Dict.empty
+
+                                KOY ->
+                                    createConversionDict dvorak koy
+
+                                Neo ->
+                                    createConversionDict dvorak neo
+
+                                QWERTZ ->
+                                    createConversionDict dvorak qwertz
+
+                        KOY ->
+                            case outputLayout of
+                                AdnW ->
+                                    createConversionDict koy adnw
+
+                                Bone ->
+                                    createConversionDict koy bone
+
+                                Dvorak ->
+                                    createConversionDict koy dvorak
+
+                                KOY ->
+                                    Dict.empty
+
+                                Neo ->
+                                    createConversionDict koy neo
+
+                                QWERTZ ->
+                                    createConversionDict koy qwertz
+
+                        Neo ->
+                            case outputLayout of
+                                AdnW ->
+                                    createConversionDict neo adnw
+
+                                Bone ->
+                                    createConversionDict neo bone
+
+                                Dvorak ->
+                                    createConversionDict neo dvorak
+
+                                KOY ->
+                                    createConversionDict neo koy
+
+                                Neo ->
+                                    Dict.empty
+
+                                QWERTZ ->
+                                    createConversionDict neo qwertz
+
+                        QWERTZ ->
+                            case outputLayout of
+                                AdnW ->
+                                    createConversionDict qwertz adnw
+
+                                Bone ->
+                                    createConversionDict qwertz bone
+
+                                Dvorak ->
+                                    createConversionDict qwertz dvorak
+
+                                KOY ->
+                                    createConversionDict qwertz koy
+
+                                Neo ->
+                                    createConversionDict qwertz neo
+
+                                QWERTZ ->
+                                    Dict.empty
     in
     String.map replaceCharacter originalText
         |> String.replace "\n" " "
@@ -191,338 +397,36 @@ subscriptions _ =
 -- Layouts
 
 
-layoutConversionNeo : Dict Char Char
-layoutConversionNeo =
-    Dict.fromList
-        [ ( 'x', 'q' )
-        , ( 'v', 'w' )
-        , ( 'l', 'e' )
-        , ( 'c', 'r' )
-        , ( 'w', 't' )
-        , ( 'k', 'z' )
-        , ( 'h', 'u' )
-        , ( 'g', 'i' )
-        , ( 'f', 'o' )
-        , ( 'q', 'p' )
-        , ( 'ß', 'ü' )
-        , ( 'u', 'a' )
-        , ( 'i', 's' )
-        , ( 'a', 'd' )
-        , ( 'e', 'f' )
-        , ( 'o', 'g' )
-        , ( 's', 'h' )
-        , ( 'n', 'j' )
-        , ( 'r', 'k' )
-        , ( 't', 'l' )
-        , ( 'd', 'ö' )
-        , ( 'y', 'ä' )
-        , ( 'ü', 'y' )
-        , ( 'ö', 'x' )
-        , ( 'ä', 'c' )
-        , ( 'p', 'v' )
-        , ( 'z', 'b' )
-        , ( 'b', 'n' )
-        , ( 'j', '-' )
-        , ( 'X', 'Q' )
-        , ( 'V', 'W' )
-        , ( 'L', 'E' )
-        , ( 'C', 'R' )
-        , ( 'W', 'T' )
-        , ( 'K', 'Z' )
-        , ( 'H', 'U' )
-        , ( 'G', 'I' )
-        , ( 'F', 'O' )
-        , ( 'Q', 'P' )
-        , ( 'U', 'A' )
-        , ( 'I', 'S' )
-        , ( 'A', 'D' )
-        , ( 'E', 'F' )
-        , ( 'O', 'G' )
-        , ( 'S', 'H' )
-        , ( 'N', 'J' )
-        , ( 'R', 'K' )
-        , ( 'T', 'L' )
-        , ( 'D', 'Ö' )
-        , ( 'Y', 'Ä' )
-        , ( 'Ü', 'Y' )
-        , ( 'Ö', 'X' )
-        , ( 'Ä', 'C' )
-        , ( 'P', 'V' )
-        , ( 'Z', 'B' )
-        , ( 'B', 'N' )
-        , ( 'J', '_' )
-        ]
+qwertz : String
+qwertz =
+    "qwertzuiopü+asdfghjklöä#<yxcvbnm,.-QWERTZUIOPÜ*ASDFGHJKLÖÄ'>YXCVBNM;:_"
 
 
-layoutConversionAdnW : Dict Char Char
-layoutConversionAdnW =
-    Dict.fromList
-        [ ( 'k', 'q' )
-        , ( 'u', 'w' )
-        , ( 'ü', 'e' )
-        , ( '.', 'r' )
-        , ( 'ä', 't' )
-        , ( 'v', 'z' )
-        , ( 'g', 'u' )
-        , ( 'c', 'i' )
-        , ( 'l', 'o' )
-        , ( 'j', 'p' )
-        , ( 'f', 'ü' )
-        , ( 'h', 'a' )
-        , ( 'i', 's' )
-        , ( 'e', 'd' )
-        , ( 'a', 'f' )
-        , ( 'o', 'g' )
-        , ( 'd', 'h' )
-        , ( 't', 'j' )
-        , ( 'r', 'k' )
-        , ( 'n', 'l' )
-        , ( 's', 'ö' )
-        , ( 'ß', 'ä' )
-        , ( 'x', 'y' )
-        , ( 'y', 'x' )
-        , ( 'ö', 'c' )
-        , ( ',', 'v' )
-        , ( 'q', 'b' )
-        , ( 'p', 'n' )
-        , ( 'b', 'm' )
-        , ( 'w', ',' )
-        , ( 'm', '.' )
-        , ( 'z', '-' )
-        , ( 'K', 'Q' )
-        , ( 'U', 'W' )
-        , ( 'Ü', 'E' )
-        , ( 'Ä', 'T' )
-        , ( 'V', 'Z' )
-        , ( 'G', 'U' )
-        , ( 'C', 'I' )
-        , ( 'L', 'O' )
-        , ( 'J', 'P' )
-        , ( 'F', 'Ü' )
-        , ( 'H', 'A' )
-        , ( 'I', 'S' )
-        , ( 'E', 'D' )
-        , ( 'A', 'F' )
-        , ( 'O', 'G' )
-        , ( 'D', 'H' )
-        , ( 'T', 'J' )
-        , ( 'R', 'K' )
-        , ( 'N', 'L' )
-        , ( 'S', 'Ö' )
-        , ( 'X', 'Y' )
-        , ( 'Y', 'X' )
-        , ( 'Ö', 'C' )
-        , ( 'Q', 'B' )
-        , ( 'B', 'N' )
-        , ( 'P', 'M' )
-        , ( 'W', ';' )
-        , ( 'M', ':' )
-        , ( 'Z', '_' )
-        ]
+neo : String
+neo =
+    "xvlcwkhgfqß´uiaeosnrtdy③④üöäpzbm,.jXVLCWKHGFQẞ~UIAEOSNRTDY⑤④ÜÖÄPZBM–•J"
 
 
-layoutConversionDvorak : Dict Char Char
-layoutConversionDvorak =
-    Dict.fromList
-        [ ( 'ü', 'q' )
-        , ( ',', 'w' )
-        , ( '.', 'e' )
-        , ( 'p', 'r' )
-        , ( 'y', 't' )
-        , ( 'f', 'z' )
-        , ( 'g', 'u' )
-        , ( 'c', 'i' )
-        , ( 't', 'o' )
-        , ( 'z', 'p' )
-        , ( '?', 'ü' )
-        , ( '/', '+' )
-        , ( 'o', 's' )
-        , ( 'e', 'd' )
-        , ( 'i', 'f' )
-        , ( 'u', 'g' )
-        , ( 'd', 'j' )
-        , ( 'r', 'k' )
-        , ( 'n', 'l' )
-        , ( 's', 'ö' )
-        , ( 'l', 'ä' )
-        , ( '-', '#' )
-        , ( 'ä', '<' )
-        , ( 'ö', 'y' )
-        , ( 'q', 'x' )
-        , ( 'j', 'c' )
-        , ( 'k', 'v' )
-        , ( 'x', 'b' )
-        , ( 'b', 'n' )
-        , ( 'w', ',' )
-        , ( 'v', '.' )
-        , ( '#', '-' )
-        , ( 'Ü', 'Q' )
-        , ( ';', 'W' )
-        , ( ':', 'E' )
-        , ( 'P', 'R' )
-        , ( 'Y', 'T' )
-        , ( 'F', 'Z' )
-        , ( 'G', 'U' )
-        , ( 'C', 'I' )
-        , ( 'T', 'O' )
-        , ( 'Z', 'P' )
-        , ( 'ß', 'Ü' )
-        , ( '\\', '*' )
-        , ( 'O', 'S' )
-        , ( 'E', 'D' )
-        , ( 'I', 'F' )
-        , ( 'U', 'G' )
-        , ( 'D', 'J' )
-        , ( 'R', 'K' )
-        , ( 'N', 'L' )
-        , ( 'S', 'Ö' )
-        , ( 'L', 'Ä' )
-        , ( '_', '\'' )
-        , ( 'Ä', '>' )
-        , ( 'Ö', 'Y' )
-        , ( 'Q', 'X' )
-        , ( 'J', 'C' )
-        , ( 'K', 'V' )
-        , ( 'X', 'B' )
-        , ( 'B', 'N' )
-        , ( 'W', ';' )
-        , ( 'V', ':' )
-        , ( '\'', '_' )
-        ]
+adnw : String
+adnw =
+    "kuü.ävgcljf´hieaodtrnsß③④xyö,qbpwmzKUÜ•ÄVGCLJF~HIEAODTRNSẞ⑤④XYÖ–QBPWMZ"
 
 
-layoutConversionBone : Dict Char Char
-layoutConversionBone =
-    Dict.fromList
-        [ ( 'j', 'q' )
-        , ( 'd', 'w' )
-        , ( 'u', 'e' )
-        , ( 'a', 'r' )
-        , ( 'x', 't' )
-        , ( 'p', 'z' )
-        , ( 'h', 'u' )
-        , ( 'l', 'i' )
-        , ( 'm', 'o' )
-        , ( 'w', 'p' )
-        , ( 'ß', 'ü' )
-        , ( 'c', 'a' )
-        , ( 't', 's' )
-        , ( 'i', 'd' )
-        , ( 'e', 'f' )
-        , ( 'o', 'g' )
-        , ( 'b', 'h' )
-        , ( 'n', 'j' )
-        , ( 'r', 'k' )
-        , ( 's', 'l' )
-        , ( 'g', 'ö' )
-        , ( 'q', 'ä' )
-        , ( 'f', 'y' )
-        , ( 'v', 'x' )
-        , ( 'ü', 'c' )
-        , ( 'ä', 'v' )
-        , ( 'ö', 'b' )
-        , ( 'y', 'n' )
-        , ( 'z', 'm' )
-        , ( 'k', '-' )
-        , ( 'J', 'Q' )
-        , ( 'D', 'W' )
-        , ( 'U', 'E' )
-        , ( 'A', 'R' )
-        , ( 'X', 'T' )
-        , ( 'P', 'Z' )
-        , ( 'H', 'U' )
-        , ( 'L', 'I' )
-        , ( 'M', 'O' )
-        , ( 'W', 'P' )
-        , ( 'ẞ', 'Ü' )
-        , ( 'C', 'A' )
-        , ( 'T', 'S' )
-        , ( 'I', 'D' )
-        , ( 'E', 'F' )
-        , ( 'O', 'G' )
-        , ( 'B', 'H' )
-        , ( 'N', 'J' )
-        , ( 'R', 'K' )
-        , ( 'S', 'L' )
-        , ( 'G', 'Ö' )
-        , ( 'Q', 'Ä' )
-        , ( 'F', 'Y' )
-        , ( 'V', 'X' )
-        , ( 'Ü', 'C' )
-        , ( 'Ä', 'V' )
-        , ( 'Ö', 'B' )
-        , ( 'Y', 'N' )
-        , ( 'Z', 'M' )
-        , ( 'K', '_' )
-        ]
+dvorak : String
+dvorak =
+    "ü,.pyfgctz?/aoeiuhdrnsl-äöqjkxbmwv#Ü;:PYFGCTZß\\AOEIUHDRNSL_ÄÖQJKXBMWV'"
 
 
-layoutConversionKOY : Dict Char Char
-layoutConversionKOY =
-    Dict.fromList
-        [ ( 'k', 'q' )
-        , ( '.', 'w' )
-        , ( 'o', 'e' )
-        , ( ',', 'r' )
-        , ( 'y', 't' )
-        , ( 'v', 'z' )
-        , ( 'g', 'u' )
-        , ( 'c', 'i' )
-        , ( 'l', 'o' )
-        , ( 'ß', 'p' )
-        , ( 'z', 'ü' )
-        , ( 'h', 'a' )
-        , ( 'a', 's' )
-        , ( 'e', 'd' )
-        , ( 'i', 'f' )
-        , ( 'u', 'g' )
-        , ( 'd', 'h' )
-        , ( 't', 'j' )
-        , ( 'r', 'k' )
-        , ( 'n', 'l' )
-        , ( 's', 'ö' )
-        , ( 'f', 'ä' )
-        , ( 'x', 'y' )
-        , ( 'q', 'x' )
-        , ( 'ä', 'c' )
-        , ( 'ü', 'v' )
-        , ( 'ö', 'b' )
-        , ( 'b', 'n' )
-        , ( 'p', 'm' )
-        , ( 'w', ',' )
-        , ( 'm', '.' )
-        , ( 'j', '-' )
-        , ( 'K', 'Q' )
-        , ( 'O', 'E' )
-        , ( 'Y', 'T' )
-        , ( 'V', 'Z' )
-        , ( 'G', 'U' )
-        , ( 'C', 'I' )
-        , ( 'L', 'O' )
-        , ( 'ẞ', 'P' )
-        , ( 'Z', 'Ü' )
-        , ( 'H', 'A' )
-        , ( 'A', 'S' )
-        , ( 'E', 'D' )
-        , ( 'I', 'F' )
-        , ( 'U', 'G' )
-        , ( 'D', 'H' )
-        , ( 'T', 'J' )
-        , ( 'R', 'K' )
-        , ( 'N', 'L' )
-        , ( 'S', 'Ö' )
-        , ( 'F', 'Ä' )
-        , ( 'X', 'Y' )
-        , ( 'Q', 'X' )
-        , ( 'Ä', 'C' )
-        , ( 'Ü', 'V' )
-        , ( 'Ö', 'B' )
-        , ( 'B', 'N' )
-        , ( 'P', 'M' )
-        , ( 'W', ';' )
-        , ( 'M', ':' )
-        , ( 'J', '_' )
-        ]
+bone : String
+bone =
+    "jduaxphlmwß´ctieobnrsgq③④fvüäöyz,.kJDUAXPHLMWẞ~CTIEOBNRSGQ⑤④FVÜÄÖYZ–•K"
 
-defaultText: String
-defaultText = """der die das in und sein ein zu von haben werden mit an für auf sich nicht es auch er als Jahr neu sein Euro groß haben Uhr erst werden Prozent viel können Deutschland ander müssen Zeit deutsch sagen Tag weit sollen Mensch gut geben Land klein wollen Million eigen kommen Kind letzt gehen Frau hoch machen Mann alt stehen Unternehmen jung lassen Stadt einig sehen Ende zweit finden Berlin vergangen bleiben Woche lange liegen Fall nah zeigen Seite wenig dürfen Mann ander sein Frau klein haben Hand groß werden Tag erst können Auge gut sagen Zeit alt sehen Jahr ganz müssen Kopf lang wollen Gesicht letzt kommen Mutter neu gehen Vater weit machen Kind viel geben Haus einig lassen Blick jung sollen Leben nahe stehen Mensch gerade wissen Tür eigen fragen Wort spät tun Stimme einzig nehmen Herr lieb hören"""
+
+koy : String
+koy =
+    "k.o,yvgclßz´haeiudtrnsf③④xqäüöbpwmjK•O–YVGCLẞZ~HAEIUDTRNSF⑤④XQÄÜÖBPWMJ"
+
+
+defaultText : String
+defaultText =
+    """der die das in und sein ein zu von haben werden mit an für auf sich nicht es auch er als Jahr neu sein Euro groß haben Uhr erst werden Prozent viel können Deutschland ander müssen Zeit deutsch sagen Tag weit sollen Mensch gut geben Land klein wollen Million eigen kommen Kind letzt gehen Frau hoch machen Mann alt stehen Unternehmen jung lassen Stadt einig sehen Ende zweit finden Berlin vergangen bleiben Woche lange liegen Fall nah zeigen Seite wenig dürfen Mann ander sein Frau klein haben Hand groß werden Tag erst können Auge gut sagen Zeit alt sehen Jahr ganz müssen Kopf lang wollen Gesicht letzt kommen Mutter neu gehen Vater weit machen Kind viel geben Haus einig lassen Blick jung sollen Leben nahe stehen Mensch gerade wissen Tür eigen fragen Wort spät tun Stimme einzig nehmen Herr lieb hören"""
