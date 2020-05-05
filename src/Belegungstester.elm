@@ -1,7 +1,7 @@
 module Belegungstester exposing (main)
 
 import Browser
-import Css exposing (auto, border2, displayFlex, flex, height, margin, marginRight, maxWidth, num, padding, pct, px, solid, width)
+import Css exposing (auto, border2, color, displayFlex, flex, fontSize, height, margin, marginRight, maxWidth, num, padding, pct, px, rgb, small, solid, width)
 import Dict exposing (Dict)
 import Html.Styled exposing (Html, div, h1, h3, option, p, select, span, text, textarea, toUnstyled)
 import Html.Styled.Attributes exposing (css, selected, value)
@@ -34,6 +34,7 @@ type Layout
     | KOY
     | Neo
     | QWERTZ
+    | CustomLayout String
 
 
 type alias Model =
@@ -41,6 +42,8 @@ type alias Model =
     , convertedText : String
     , inputLayout : Layout
     , outputLayout : Layout
+    , customInputLayout : String
+    , customOutputLayout : String
     , position : Int
     }
 
@@ -51,6 +54,8 @@ init _ =
       , convertedText = convertText defaultText QWERTZ Neo
       , inputLayout = QWERTZ
       , outputLayout = Neo
+      , customInputLayout = qwertz
+      , customOutputLayout = qwertz
       , position = 0
       }
     , Cmd.none
@@ -65,6 +70,8 @@ type Msg
     = TextChanged String
     | InputLayoutChanged String
     | OutputLayoutChanged String
+    | CustomInputLayoutChanged String
+    | CustomOutputLayoutChanged String
     | KeyDown RawKey
 
 
@@ -74,13 +81,9 @@ update msg model =
         newModel =
             case msg of
                 TextChanged newText ->
-                    let
-                        newConvertedText =
-                            convertText newText model.inputLayout model.outputLayout
-                    in
                     { model
                         | text = newText
-                        , convertedText = newConvertedText
+                        , convertedText = convertText newText model.inputLayout model.outputLayout
                         , position = 0
                     }
 
@@ -124,6 +127,13 @@ update msg model =
                         { model
                             | inputLayout = QWERTZ
                             , convertedText = convertText model.text QWERTZ model.outputLayout
+                            , position = 0
+                        }
+
+                    else if newLayout == "Folgendem" then
+                        { model
+                            | inputLayout = CustomLayout model.customInputLayout
+                            , convertedText = convertText model.text (CustomLayout model.customInputLayout) model.outputLayout
                             , position = 0
                         }
 
@@ -173,8 +183,31 @@ update msg model =
                             , position = 0
                         }
 
+                    else if newLayout == "Folgendem" then
+                        { model
+                            | outputLayout = CustomLayout model.customOutputLayout
+                            , convertedText = convertText model.text model.inputLayout (CustomLayout model.customOutputLayout)
+                            , position = 0
+                        }
+
                     else
                         model
+
+                CustomInputLayoutChanged newCustomInputLayout ->
+                    { model
+                        | inputLayout = CustomLayout newCustomInputLayout
+                        , customInputLayout = newCustomInputLayout
+                        , convertedText = convertText model.text (CustomLayout newCustomInputLayout) model.outputLayout
+                        , position = 0
+                    }
+
+                CustomOutputLayoutChanged newCustomOutputLayout ->
+                    { model
+                        | outputLayout = CustomLayout newCustomOutputLayout
+                        , customOutputLayout = newCustomOutputLayout
+                        , convertedText = convertText model.text model.inputLayout (CustomLayout newCustomOutputLayout)
+                        , position = 0
+                    }
 
                 KeyDown key ->
                     if Keyboard.rawValue key == String.slice model.position (model.position + 1) model.convertedText then
@@ -197,7 +230,7 @@ update msg model =
 view : Model -> Html Msg
 view model =
     div
-        [ css [ maxWidth (px 800), margin auto, padding (px 10) ] ]
+        [ css [ maxWidth (px 1024), margin auto, padding (px 20) ] ]
         [ h1 [] [ text "Belegungstester" ]
         , p []
             [ text "Ich tippe mit "
@@ -208,6 +241,7 @@ view model =
                 , option [] [ text "KOY" ]
                 , option [] [ text "Neo" ]
                 , option [ selected True ] [ text "QWERTZ" ]
+                , option [] [ text "Folgendem" ]
                 ]
             , text " und würde gerne wissen, wie sich das Tippen mit "
             , select [ onInput OutputLayoutChanged ]
@@ -217,17 +251,58 @@ view model =
                 , option [] [ text "KOY" ]
                 , option [ selected True ] [ text "Neo" ]
                 , option [] [ text "QWERTZ" ]
+                , option [] [ text "Folgendem" ]
                 ]
             , text " anfühlt."
             ]
+        , div [ css [ displayFlex ] ]
+            [ div [ css [ flex (num 1), marginRight (px 40) ] ]
+                [ if model.inputLayout == CustomLayout model.customInputLayout then
+                    div []
+                        [ textarea
+                            [ value model.customInputLayout
+                            , onInput CustomInputLayoutChanged
+                            , css [ width (px 100), height (px 120) ]
+                            ]
+                            []
+                        ]
+
+                  else
+                    text ""
+                , if String.length (String.replace "\n" "" model.customInputLayout) /= 70 then
+                    div [ css [ fontSize small, color (rgb 255 0 0) ] ]
+                        [ text "Eine Belegung sollte aus 70 Zeichen bestehen. 2×(12+12+11)" ]
+
+                  else
+                    text ""
+                ]
+            , div [ css [ flex (num 1) ] ]
+                [ if model.outputLayout == CustomLayout model.customOutputLayout then
+                    textarea
+                        [ value model.customOutputLayout
+                        , onInput CustomOutputLayoutChanged
+                        , css [ width (px 100), height (px 120) ]
+                        ]
+                        []
+
+                  else
+                    text ""
+                , if String.length (String.replace "\n" "" model.customOutputLayout) /= 70 then
+                    div [ css [ fontSize small, color (rgb 255 0 0) ] ]
+                        [ text "Eine Belegung sollte aus 70 Zeichen bestehen. 2×(12+12+11)" ]
+
+                  else
+                    text ""
+                ]
+            ]
         , div
             [ css [ displayFlex ] ]
-            [ div [ css [ flex (num 1), marginRight (px 10) ] ]
-                [ h3 [] [ text "Eingabe" ]
+            [ div [ css [ flex (num 1), marginRight (px 40) ] ]
+                [ h3 [] [ text "Das müsste ich tippen…" ]
                 , markPositionInText model.position model.convertedText
                 ]
             , div [ css [ flex (num 1) ] ]
-                [ h3 [] [ text "Ergebnis" ]
+                [ h3 [] [ text "…um diesen Text zu erzeugen." ]
                 , textarea
                     [ value model.text
                     , onInput TextChanged
@@ -253,7 +328,20 @@ convertText originalText inputLayout outputLayout =
     let
         createConversionDict : String -> String -> Dict Char Char
         createConversionDict inputString outputString =
-            Dict.fromList (List.map2 Tuple.pair (String.toList outputString) (String.toList inputString))
+            let
+                cleanInputStringAsList =
+                    String.replace "\n" "" inputString
+                        |> String.toList
+
+                cleanOutputStringAsList =
+                    String.replace "\n" "" outputString
+                        |> String.toList
+
+                zip list1 list2 =
+                    List.map2 Tuple.pair list1 list2
+            in
+            zip cleanOutputStringAsList cleanInputStringAsList
+                |> Dict.fromList
 
         replaceCharacter : Char -> Char
         replaceCharacter input =
@@ -280,6 +368,9 @@ convertText originalText inputLayout outputLayout =
                                 QWERTZ ->
                                     createConversionDict adnw qwertz
 
+                                CustomLayout customOutputLayout ->
+                                    createConversionDict adnw customOutputLayout
+
                         Bone ->
                             case outputLayout of
                                 AdnW ->
@@ -299,6 +390,9 @@ convertText originalText inputLayout outputLayout =
 
                                 QWERTZ ->
                                     createConversionDict bone qwertz
+
+                                CustomLayout customOutputLayout ->
+                                    createConversionDict bone customOutputLayout
 
                         Dvorak ->
                             case outputLayout of
@@ -320,6 +414,9 @@ convertText originalText inputLayout outputLayout =
                                 QWERTZ ->
                                     createConversionDict dvorak qwertz
 
+                                CustomLayout customOutputLayout ->
+                                    createConversionDict dvorak customOutputLayout
+
                         KOY ->
                             case outputLayout of
                                 AdnW ->
@@ -339,6 +436,9 @@ convertText originalText inputLayout outputLayout =
 
                                 QWERTZ ->
                                     createConversionDict koy qwertz
+
+                                CustomLayout customOutputLayout ->
+                                    createConversionDict koy customOutputLayout
 
                         Neo ->
                             case outputLayout of
@@ -360,6 +460,9 @@ convertText originalText inputLayout outputLayout =
                                 QWERTZ ->
                                     createConversionDict neo qwertz
 
+                                CustomLayout customOutputLayout ->
+                                    createConversionDict neo customOutputLayout
+
                         QWERTZ ->
                             case outputLayout of
                                 AdnW ->
@@ -379,9 +482,35 @@ convertText originalText inputLayout outputLayout =
 
                                 QWERTZ ->
                                     Dict.empty
+
+                                CustomLayout customOutputLayout ->
+                                    createConversionDict qwertz customOutputLayout
+
+                        CustomLayout customInputLayout ->
+                            case outputLayout of
+                                AdnW ->
+                                    createConversionDict customInputLayout adnw
+
+                                Bone ->
+                                    createConversionDict customInputLayout bone
+
+                                Dvorak ->
+                                    createConversionDict customInputLayout dvorak
+
+                                KOY ->
+                                    createConversionDict customInputLayout koy
+
+                                Neo ->
+                                    createConversionDict customInputLayout neo
+
+                                QWERTZ ->
+                                    createConversionDict customInputLayout qwertz
+
+                                CustomLayout customOutputLayout ->
+                                    createConversionDict customInputLayout customOutputLayout
     in
-    String.map replaceCharacter originalText
-        |> String.replace "\n" " "
+    String.replace "\n" " " originalText
+        |> String.map replaceCharacter
 
 
 
@@ -397,24 +526,9 @@ subscriptions _ =
 -- Layouts
 
 
-qwertz : String
-qwertz =
-    "qwertzuiopü+asdfghjklöä#<yxcvbnm,.-QWERTZUIOPÜ*ASDFGHJKLÖÄ'>YXCVBNM;:_"
-
-
-neo : String
-neo =
-    "xvlcwkhgfqß´uiaeosnrtdy③④üöäpzbm,.jXVLCWKHGFQẞ~UIAEOSNRTDY⑤④ÜÖÄPZBM–•J"
-
-
 adnw : String
 adnw =
     "kuü.ävgcljf´hieaodtrnsß③④xyö,qbpwmzKUÜ•ÄVGCLJF~HIEAODTRNSẞ⑤④XYÖ–QBPWMZ"
-
-
-dvorak : String
-dvorak =
-    "ü,.pyfgctz?/aoeiuhdrnsl-äöqjkxbmwv#Ü;:PYFGCTZß\\AOEIUHDRNSL_ÄÖQJKXBMWV'"
 
 
 bone : String
@@ -422,9 +536,24 @@ bone =
     "jduaxphlmwß´ctieobnrsgq③④fvüäöyz,.kJDUAXPHLMWẞ~CTIEOBNRSGQ⑤④FVÜÄÖYZ–•K"
 
 
+dvorak : String
+dvorak =
+    "ü,.pyfgctz?/aoeiuhdrnsl-äöqjkxbmwv#Ü;:PYFGCTZß\\AOEIUHDRNSL_ÄÖQJKXBMWV'"
+
+
 koy : String
 koy =
     "k.o,yvgclßz´haeiudtrnsf③④xqäüöbpwmjK•O–YVGCLẞZ~HAEIUDTRNSF⑤④XQÄÜÖBPWMJ"
+
+
+neo : String
+neo =
+    "xvlcwkhgfqß´uiaeosnrtdy③④üöäpzbm,.jXVLCWKHGFQẞ~UIAEOSNRTDY⑤④ÜÖÄPZBM–•J"
+
+
+qwertz : String
+qwertz =
+    "qwertzuiopü+\nasdfghjklöä#\n<yxcvbnm,.-\n\nQWERTZUIOPÜ*\nASDFGHJKLÖÄ'\n>YXCVBNM;:_"
 
 
 defaultText : String

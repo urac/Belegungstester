@@ -798,11 +798,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.a5.aA === region.bm.aA)
+	if (region.a7.aC === region.bo.aC)
 	{
-		return 'on line ' + region.a5.aA;
+		return 'on line ' + region.a7.aC;
 	}
-	return 'on lines ' + region.a5.aA + ' through ' + region.bm.aA;
+	return 'on lines ' + region.a7.aC + ' through ' + region.bo.aC;
 }
 
 
@@ -1871,9 +1871,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.b7,
+		impl.b9,
+		impl.cm,
 		impl.ck,
-		impl.ci,
 		function() { return function() {} }
 	);
 });
@@ -2718,9 +2718,9 @@ var _VirtualDom_mapEventTuple = F2(function(func, tuple)
 var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
-		L: func(record.L),
-		a6: record.a6,
-		a3: record.a3
+		N: func(record.N),
+		a8: record.a8,
+		a5: record.a5
 	}
 });
 
@@ -2988,11 +2988,11 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 		// 3 = Custom
 
 		var value = result.a;
-		var message = !tag ? value : tag < 3 ? value.a : value.L;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.a6;
+		var message = !tag ? value : tag < 3 ? value.a : value.N;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.a8;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.a3) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.a5) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3942,11 +3942,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.b7,
+		impl.b9,
+		impl.cm,
 		impl.ck,
-		impl.ci,
 		function(sendToApp, initialModel) {
-			var view = impl.cm;
+			var view = impl.co;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3978,12 +3978,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.b7,
+		impl.b9,
+		impl.cm,
 		impl.ck,
-		impl.ci,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.a4 && impl.a4(sendToApp)
-			var view = impl.cm;
+			var divertHrefToApp = impl.a6 && impl.a6(sendToApp)
+			var view = impl.co;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3991,12 +3991,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.bZ);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.b$);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.cj) && (_VirtualDom_doc.title = title = doc.cj);
+				(title !== doc.cl) && (_VirtualDom_doc.title = title = doc.cl);
 			});
 		}
 	);
@@ -4052,12 +4052,12 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.cb;
-	var onUrlRequest = impl.cc;
+	var onUrlChange = impl.cd;
+	var onUrlRequest = impl.ce;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		a4: function(sendToApp)
+		a6: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4073,9 +4073,9 @@ function _Browser_application(impl)
 					var next = $elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.bF === next.bF
-							&& curr.br === next.br
-							&& curr.bC.a === next.bC.a
+							&& curr.bH === next.bH
+							&& curr.bt === next.bt
+							&& curr.bE.a === next.bE.a
 						)
 							? $elm$browser$Browser$Internal(next)
 							: $elm$browser$Browser$External(href)
@@ -4083,13 +4083,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		b7: function(flags)
+		b9: function(flags)
 		{
-			return A3(impl.b7, flags, _Browser_getUrl(), key);
+			return A3(impl.b9, flags, _Browser_getUrl(), key);
 		},
+		co: impl.co,
 		cm: impl.cm,
-		ck: impl.ck,
-		ci: impl.ci
+		ck: impl.ck
 	});
 }
 
@@ -4155,17 +4155,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { b4: 'hidden', b_: 'visibilitychange' }
+		? { b6: 'hidden', b0: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { b4: 'mozHidden', b_: 'mozvisibilitychange' }
+		? { b6: 'mozHidden', b0: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { b4: 'msHidden', b_: 'msvisibilitychange' }
+		? { b6: 'msHidden', b0: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { b4: 'webkitHidden', b_: 'webkitvisibilitychange' }
-		: { b4: 'hidden', b_: 'visibilitychange' };
+		? { b6: 'webkitHidden', b0: 'webkitvisibilitychange' }
+		: { b6: 'hidden', b0: 'visibilitychange' };
 }
 
 
@@ -4246,12 +4246,12 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		bK: _Browser_getScene(),
-		bR: {
-			bT: _Browser_window.pageXOffset,
-			bU: _Browser_window.pageYOffset,
-			bS: _Browser_doc.documentElement.clientWidth,
-			bq: _Browser_doc.documentElement.clientHeight
+		bM: _Browser_getScene(),
+		bT: {
+			bV: _Browser_window.pageXOffset,
+			bW: _Browser_window.pageYOffset,
+			bU: _Browser_doc.documentElement.clientWidth,
+			bs: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4261,8 +4261,8 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		bS: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		bq: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		bU: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		bs: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4285,15 +4285,15 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			bK: {
-				bS: node.scrollWidth,
-				bq: node.scrollHeight
+			bM: {
+				bU: node.scrollWidth,
+				bs: node.scrollHeight
 			},
-			bR: {
-				bT: node.scrollLeft,
-				bU: node.scrollTop,
-				bS: node.clientWidth,
-				bq: node.clientHeight
+			bT: {
+				bV: node.scrollLeft,
+				bW: node.scrollTop,
+				bU: node.clientWidth,
+				bs: node.clientHeight
 			}
 		};
 	});
@@ -4323,18 +4323,18 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			bK: _Browser_getScene(),
-			bR: {
-				bT: x,
-				bU: y,
-				bS: _Browser_doc.documentElement.clientWidth,
-				bq: _Browser_doc.documentElement.clientHeight
+			bM: _Browser_getScene(),
+			bT: {
+				bV: x,
+				bW: y,
+				bU: _Browser_doc.documentElement.clientWidth,
+				bs: _Browser_doc.documentElement.clientHeight
 			},
-			b2: {
-				bT: x + rect.left,
-				bU: y + rect.top,
-				bS: rect.width,
-				bq: rect.height
+			b4: {
+				bV: x + rect.left,
+				bW: y + rect.top,
+				bU: rect.width,
+				bs: rect.height
 			}
 		};
 	});
@@ -4817,25 +4817,25 @@ var $elm$core$Array$treeFromBuilder = F2(
 	});
 var $elm$core$Array$builderToArray = F2(
 	function (reverseNodeList, builder) {
-		if (!builder.h) {
+		if (!builder.l) {
 			return A4(
 				$elm$core$Array$Array_elm_builtin,
-				$elm$core$Elm$JsArray$length(builder.j),
+				$elm$core$Elm$JsArray$length(builder.n),
 				$elm$core$Array$shiftStep,
 				$elm$core$Elm$JsArray$empty,
-				builder.j);
+				builder.n);
 		} else {
-			var treeLen = builder.h * $elm$core$Array$branchFactor;
+			var treeLen = builder.l * $elm$core$Array$branchFactor;
 			var depth = $elm$core$Basics$floor(
 				A2($elm$core$Basics$logBase, $elm$core$Array$branchFactor, treeLen - 1));
-			var correctNodeList = reverseNodeList ? $elm$core$List$reverse(builder.l) : builder.l;
-			var tree = A2($elm$core$Array$treeFromBuilder, correctNodeList, builder.h);
+			var correctNodeList = reverseNodeList ? $elm$core$List$reverse(builder.o) : builder.o;
+			var tree = A2($elm$core$Array$treeFromBuilder, correctNodeList, builder.l);
 			return A4(
 				$elm$core$Array$Array_elm_builtin,
-				$elm$core$Elm$JsArray$length(builder.j) + treeLen,
+				$elm$core$Elm$JsArray$length(builder.n) + treeLen,
 				A2($elm$core$Basics$max, 5, depth * $elm$core$Array$shiftStep),
 				tree,
-				builder.j);
+				builder.n);
 		}
 	});
 var $elm$core$Basics$idiv = _Basics_idiv;
@@ -4848,7 +4848,7 @@ var $elm$core$Array$initializeHelp = F5(
 				return A2(
 					$elm$core$Array$builderToArray,
 					false,
-					{l: nodeList, h: (len / $elm$core$Array$branchFactor) | 0, j: tail});
+					{o: nodeList, l: (len / $elm$core$Array$branchFactor) | 0, n: tail});
 			} else {
 				var leaf = $elm$core$Array$Leaf(
 					A3($elm$core$Elm$JsArray$initialize, $elm$core$Array$branchFactor, fromIndex, fn));
@@ -4915,7 +4915,7 @@ var $elm$url$Url$Http = 0;
 var $elm$url$Url$Https = 1;
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {bp: fragment, br: host, bA: path, bC: port_, bF: protocol, bG: query};
+		return {br: fragment, bt: host, bC: path, bE: port_, bH: protocol, bI: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5194,8 +5194,8 @@ var $elm$core$Task$perform = F2(
 			A2($elm$core$Task$map, toMessage, task));
 	});
 var $elm$browser$Browser$element = _Browser_element;
-var $author$project$Belegungstester$Neo = 4;
-var $author$project$Belegungstester$QWERTZ = 5;
+var $author$project$Belegungstester$Neo = {$: 4};
+var $author$project$Belegungstester$QWERTZ = {$: 5};
 var $author$project$Belegungstester$adnw = 'kuü.ävgcljf´hieaodtrnsß③④xyö,qbpwmzKUÜ•ÄVGCLJF~HIEAODTRNSẞ⑤④XYÖ–QBPWMZ';
 var $author$project$Belegungstester$bone = 'jduaxphlmwß´ctieobnrsgq③④fvüäöyz,.kJDUAXPHLMWẞ~CTIEOBNRSGQ⑤④FVÜÄÖYZ–•K';
 var $author$project$Belegungstester$dvorak = 'ü,.pyfgctz?/aoeiuhdrnsl-äöqjkxbmwv#Ü;:PYFGCTZß\\AOEIUHDRNSL_ÄÖQJKXBMWV\'';
@@ -5360,7 +5360,7 @@ var $elm$core$Tuple$pair = F2(
 	function (a, b) {
 		return _Utils_Tuple2(a, b);
 	});
-var $author$project$Belegungstester$qwertz = 'qwertzuiopü+asdfghjklöä#<yxcvbnm,.-QWERTZUIOPÜ*ASDFGHJKLÖÄ\'>YXCVBNM;:_';
+var $author$project$Belegungstester$qwertz = 'qwertzuiopü+\nasdfghjklöä#\n<yxcvbnm,.-\n\nQWERTZUIOPÜ*\nASDFGHJKLÖÄ\'\n>YXCVBNM;:_';
 var $elm$core$String$replace = F3(
 	function (before, after, string) {
 		return A2(
@@ -5385,12 +5385,16 @@ var $author$project$Belegungstester$convertText = F3(
 	function (originalText, inputLayout, outputLayout) {
 		var createConversionDict = F2(
 			function (inputString, outputString) {
+				var zip = F2(
+					function (list1, list2) {
+						return A3($elm$core$List$map2, $elm$core$Tuple$pair, list1, list2);
+					});
+				var cleanOutputStringAsList = $elm$core$String$toList(
+					A3($elm$core$String$replace, '\n', '', outputString));
+				var cleanInputStringAsList = $elm$core$String$toList(
+					A3($elm$core$String$replace, '\n', '', inputString));
 				return $elm$core$Dict$fromList(
-					A3(
-						$elm$core$List$map2,
-						$elm$core$Tuple$pair,
-						$elm$core$String$toList(outputString),
-						$elm$core$String$toList(inputString)));
+					A2(zip, cleanOutputStringAsList, cleanInputStringAsList));
 			});
 		var replaceCharacter = function (input) {
 			return A2(
@@ -5400,9 +5404,9 @@ var $author$project$Belegungstester$convertText = F3(
 					$elm$core$Dict$get,
 					input,
 					function () {
-						switch (inputLayout) {
+						switch (inputLayout.$) {
 							case 0:
-								switch (outputLayout) {
+								switch (outputLayout.$) {
 									case 0:
 										return $elm$core$Dict$empty;
 									case 1:
@@ -5413,11 +5417,14 @@ var $author$project$Belegungstester$convertText = F3(
 										return A2(createConversionDict, $author$project$Belegungstester$adnw, $author$project$Belegungstester$koy);
 									case 4:
 										return A2(createConversionDict, $author$project$Belegungstester$adnw, $author$project$Belegungstester$neo);
-									default:
+									case 5:
 										return A2(createConversionDict, $author$project$Belegungstester$adnw, $author$project$Belegungstester$qwertz);
+									default:
+										var customOutputLayout = outputLayout.a;
+										return A2(createConversionDict, $author$project$Belegungstester$adnw, customOutputLayout);
 								}
 							case 1:
-								switch (outputLayout) {
+								switch (outputLayout.$) {
 									case 0:
 										return A2(createConversionDict, $author$project$Belegungstester$bone, $author$project$Belegungstester$adnw);
 									case 1:
@@ -5428,11 +5435,14 @@ var $author$project$Belegungstester$convertText = F3(
 										return A2(createConversionDict, $author$project$Belegungstester$bone, $author$project$Belegungstester$koy);
 									case 4:
 										return A2(createConversionDict, $author$project$Belegungstester$bone, $author$project$Belegungstester$neo);
-									default:
+									case 5:
 										return A2(createConversionDict, $author$project$Belegungstester$bone, $author$project$Belegungstester$qwertz);
+									default:
+										var customOutputLayout = outputLayout.a;
+										return A2(createConversionDict, $author$project$Belegungstester$bone, customOutputLayout);
 								}
 							case 2:
-								switch (outputLayout) {
+								switch (outputLayout.$) {
 									case 0:
 										return A2(createConversionDict, $author$project$Belegungstester$dvorak, $author$project$Belegungstester$adnw);
 									case 1:
@@ -5443,11 +5453,14 @@ var $author$project$Belegungstester$convertText = F3(
 										return A2(createConversionDict, $author$project$Belegungstester$dvorak, $author$project$Belegungstester$koy);
 									case 4:
 										return A2(createConversionDict, $author$project$Belegungstester$dvorak, $author$project$Belegungstester$neo);
-									default:
+									case 5:
 										return A2(createConversionDict, $author$project$Belegungstester$dvorak, $author$project$Belegungstester$qwertz);
+									default:
+										var customOutputLayout = outputLayout.a;
+										return A2(createConversionDict, $author$project$Belegungstester$dvorak, customOutputLayout);
 								}
 							case 3:
-								switch (outputLayout) {
+								switch (outputLayout.$) {
 									case 0:
 										return A2(createConversionDict, $author$project$Belegungstester$koy, $author$project$Belegungstester$adnw);
 									case 1:
@@ -5458,11 +5471,14 @@ var $author$project$Belegungstester$convertText = F3(
 										return $elm$core$Dict$empty;
 									case 4:
 										return A2(createConversionDict, $author$project$Belegungstester$koy, $author$project$Belegungstester$neo);
-									default:
+									case 5:
 										return A2(createConversionDict, $author$project$Belegungstester$koy, $author$project$Belegungstester$qwertz);
+									default:
+										var customOutputLayout = outputLayout.a;
+										return A2(createConversionDict, $author$project$Belegungstester$koy, customOutputLayout);
 								}
 							case 4:
-								switch (outputLayout) {
+								switch (outputLayout.$) {
 									case 0:
 										return A2(createConversionDict, $author$project$Belegungstester$neo, $author$project$Belegungstester$adnw);
 									case 1:
@@ -5473,11 +5489,14 @@ var $author$project$Belegungstester$convertText = F3(
 										return A2(createConversionDict, $author$project$Belegungstester$neo, $author$project$Belegungstester$koy);
 									case 4:
 										return $elm$core$Dict$empty;
-									default:
+									case 5:
 										return A2(createConversionDict, $author$project$Belegungstester$neo, $author$project$Belegungstester$qwertz);
+									default:
+										var customOutputLayout = outputLayout.a;
+										return A2(createConversionDict, $author$project$Belegungstester$neo, customOutputLayout);
 								}
-							default:
-								switch (outputLayout) {
+							case 5:
+								switch (outputLayout.$) {
 									case 0:
 										return A2(createConversionDict, $author$project$Belegungstester$qwertz, $author$project$Belegungstester$adnw);
 									case 1:
@@ -5488,17 +5507,38 @@ var $author$project$Belegungstester$convertText = F3(
 										return A2(createConversionDict, $author$project$Belegungstester$qwertz, $author$project$Belegungstester$koy);
 									case 4:
 										return A2(createConversionDict, $author$project$Belegungstester$qwertz, $author$project$Belegungstester$neo);
-									default:
+									case 5:
 										return $elm$core$Dict$empty;
+									default:
+										var customOutputLayout = outputLayout.a;
+										return A2(createConversionDict, $author$project$Belegungstester$qwertz, customOutputLayout);
+								}
+							default:
+								var customInputLayout = inputLayout.a;
+								switch (outputLayout.$) {
+									case 0:
+										return A2(createConversionDict, customInputLayout, $author$project$Belegungstester$adnw);
+									case 1:
+										return A2(createConversionDict, customInputLayout, $author$project$Belegungstester$bone);
+									case 2:
+										return A2(createConversionDict, customInputLayout, $author$project$Belegungstester$dvorak);
+									case 3:
+										return A2(createConversionDict, customInputLayout, $author$project$Belegungstester$koy);
+									case 4:
+										return A2(createConversionDict, customInputLayout, $author$project$Belegungstester$neo);
+									case 5:
+										return A2(createConversionDict, customInputLayout, $author$project$Belegungstester$qwertz);
+									default:
+										var customOutputLayout = outputLayout.a;
+										return A2(createConversionDict, customInputLayout, customOutputLayout);
 								}
 						}
 					}()));
 		};
-		return A3(
-			$elm$core$String$replace,
-			'\n',
-			' ',
-			A2($elm$core$String$map, replaceCharacter, originalText));
+		return A2(
+			$elm$core$String$map,
+			replaceCharacter,
+			A3($elm$core$String$replace, '\n', ' ', originalText));
 	});
 var $author$project$Belegungstester$defaultText = 'der die das in und sein ein zu von haben werden mit an für auf sich nicht es auch er als Jahr neu sein Euro groß haben Uhr erst werden Prozent viel können Deutschland ander müssen Zeit deutsch sagen Tag weit sollen Mensch gut geben Land klein wollen Million eigen kommen Kind letzt gehen Frau hoch machen Mann alt stehen Unternehmen jung lassen Stadt einig sehen Ende zweit finden Berlin vergangen bleiben Woche lange liegen Fall nah zeigen Seite wenig dürfen Mann ander sein Frau klein haben Hand groß werden Tag erst können Auge gut sagen Zeit alt sehen Jahr ganz müssen Kopf lang wollen Gesicht letzt kommen Mutter neu gehen Vater weit machen Kind viel geben Haus einig lassen Blick jung sollen Leben nahe stehen Mensch gerade wissen Tür eigen fragen Wort spät tun Stimme einzig nehmen Herr lieb hören';
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
@@ -5506,16 +5546,18 @@ var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $author$project$Belegungstester$init = function (_v0) {
 	return _Utils_Tuple2(
 		{
-			k: A3($author$project$Belegungstester$convertText, $author$project$Belegungstester$defaultText, 5, 4),
-			n: 5,
-			p: 4,
-			f: 0,
-			m: $author$project$Belegungstester$defaultText
+			g: A3($author$project$Belegungstester$convertText, $author$project$Belegungstester$defaultText, $author$project$Belegungstester$QWERTZ, $author$project$Belegungstester$Neo),
+			H: $author$project$Belegungstester$qwertz,
+			I: $author$project$Belegungstester$qwertz,
+			i: $author$project$Belegungstester$QWERTZ,
+			j: $author$project$Belegungstester$Neo,
+			d: 0,
+			h: $author$project$Belegungstester$defaultText
 		},
 		$elm$core$Platform$Cmd$none);
 };
 var $author$project$Belegungstester$KeyDown = function (a) {
-	return {$: 3, a: a};
+	return {$: 5, a: a};
 };
 var $elm$core$Platform$Sub$batch = _Platform_batch;
 var $ohanhi$keyboard$Keyboard$RawKey = $elm$core$Basics$identity;
@@ -5532,7 +5574,7 @@ var $elm$browser$Browser$Events$MySub = F3(
 	});
 var $elm$browser$Browser$Events$State = F2(
 	function (subs, pids) {
-		return {bB: pids, bM: subs};
+		return {bD: pids, bO: subs};
 	});
 var $elm$browser$Browser$Events$init = $elm$core$Task$succeed(
 	A2($elm$browser$Browser$Events$State, _List_Nil, $elm$core$Dict$empty));
@@ -5641,7 +5683,7 @@ var $elm$core$Dict$merge = F6(
 	});
 var $elm$browser$Browser$Events$Event = F2(
 	function (key, event) {
-		return {bn: event, bw: key};
+		return {bp: event, by: key};
 	});
 var $elm$core$Platform$sendToSelf = _Platform_sendToSelf;
 var $elm$browser$Browser$Events$spawn = F3(
@@ -5716,7 +5758,7 @@ var $elm$browser$Browser$Events$onEffects = F3(
 			stepLeft,
 			stepBoth,
 			stepRight,
-			state.bB,
+			state.bD,
 			$elm$core$Dict$fromList(newSubs),
 			_Utils_Tuple3(_List_Nil, $elm$core$Dict$empty, _List_Nil));
 		var deadPids = _v0.a;
@@ -5762,8 +5804,8 @@ var $elm$core$List$filterMap = F2(
 	});
 var $elm$browser$Browser$Events$onSelfMsg = F3(
 	function (router, _v0, state) {
-		var key = _v0.bw;
-		var event = _v0.bn;
+		var key = _v0.by;
+		var event = _v0.bp;
 		var toMessage = function (_v2) {
 			var subKey = _v2.a;
 			var _v3 = _v2.b;
@@ -5772,7 +5814,7 @@ var $elm$browser$Browser$Events$onSelfMsg = F3(
 			var decoder = _v3.c;
 			return _Utils_eq(subKey, key) ? A2(_Browser_decodeEvent, decoder, event) : $elm$core$Maybe$Nothing;
 		};
-		var messages = A2($elm$core$List$filterMap, toMessage, state.bM);
+		var messages = A2($elm$core$List$filterMap, toMessage, state.bO);
 		return A2(
 			$elm$core$Task$andThen,
 			function (_v1) {
@@ -6184,8 +6226,8 @@ var $rtfeldman$elm_css$Css$Structure$compactHelp = F2(
 					A2($elm$core$List$cons, declaration, declarations));
 			case 6:
 				var record = declaration.a;
-				return $elm$core$String$isEmpty(record.b$) ? _Utils_Tuple2(keyframesByName, declarations) : _Utils_Tuple2(
-					A3($elm$core$Dict$insert, record.ca, record.b$, keyframesByName),
+				return $elm$core$String$isEmpty(record.b1) ? _Utils_Tuple2(keyframesByName, declarations) : _Utils_Tuple2(
+					A3($elm$core$Dict$insert, record.cc, record.b1, keyframesByName),
 					declarations);
 			case 7:
 				var properties = declaration.a;
@@ -6231,16 +6273,16 @@ var $rtfeldman$elm_css$Css$Structure$withKeyframeDeclarations = F2(
 					var name = _v0.a;
 					var decl = _v0.b;
 					return $rtfeldman$elm_css$Css$Structure$Keyframes(
-						{b$: decl, ca: name});
+						{b1: decl, cc: name});
 				},
 				$elm$core$Dict$toList(keyframesByName)),
 			compactedDeclarations);
 	});
 var $rtfeldman$elm_css$Css$Structure$compactStylesheet = function (_v0) {
-	var charset = _v0.bj;
-	var imports = _v0.bs;
-	var namespaces = _v0.by;
-	var declarations = _v0.b0;
+	var charset = _v0.bl;
+	var imports = _v0.bu;
+	var namespaces = _v0.bA;
+	var declarations = _v0.b2;
 	var _v1 = A3(
 		$elm$core$List$foldr,
 		$rtfeldman$elm_css$Css$Structure$compactHelp,
@@ -6249,7 +6291,7 @@ var $rtfeldman$elm_css$Css$Structure$compactStylesheet = function (_v0) {
 	var keyframesByName = _v1.a;
 	var compactedDeclarations = _v1.b;
 	var finalDeclarations = A2($rtfeldman$elm_css$Css$Structure$withKeyframeDeclarations, keyframesByName, compactedDeclarations);
-	return {bj: charset, b0: finalDeclarations, bs: imports, by: namespaces};
+	return {bl: charset, b2: finalDeclarations, bu: imports, bA: namespaces};
 };
 var $elm$core$Maybe$map = F2(
 	function (f, maybe) {
@@ -6284,7 +6326,7 @@ var $elm$core$List$filter = F2(
 			list);
 	});
 var $rtfeldman$elm_css$Css$Structure$Output$mediaExpressionToString = function (expression) {
-	return '(' + (expression.bo + (A2(
+	return '(' + (expression.bq + (A2(
 		$elm$core$Maybe$withDefault,
 		'',
 		A2(
@@ -6532,8 +6574,8 @@ var $rtfeldman$elm_css$Css$Structure$Output$prettyPrintDeclaration = function (d
 		case 5:
 			return 'TODO';
 		case 6:
-			var name = decl.a.ca;
-			var declaration = decl.a.b$;
+			var name = decl.a.cc;
+			var declaration = decl.a.b1;
 			return '@keyframes ' + (name + (' {\n' + (declaration + '\n}')));
 		case 7:
 			return 'TODO';
@@ -6544,10 +6586,10 @@ var $rtfeldman$elm_css$Css$Structure$Output$prettyPrintDeclaration = function (d
 	}
 };
 var $rtfeldman$elm_css$Css$Structure$Output$prettyPrint = function (_v0) {
-	var charset = _v0.bj;
-	var imports = _v0.bs;
-	var namespaces = _v0.by;
-	var declarations = _v0.b0;
+	var charset = _v0.bl;
+	var imports = _v0.bu;
+	var namespaces = _v0.bA;
+	var declarations = _v0.b2;
 	return A2(
 		$elm$core$String$join,
 		'\n\n',
@@ -6966,7 +7008,7 @@ var $rtfeldman$elm_css$Css$Structure$concatMapLastStyleBlock = F2(
 var $elm$core$String$cons = _String_cons;
 var $Skinney$murmur3$Murmur3$HashData = F4(
 	function (shift, seed, hash, charsProcessed) {
-		return {ab: charsProcessed, ah: hash, W: seed, am: shift};
+		return {ad: charsProcessed, aj: hash, Y: seed, ao: shift};
 	});
 var $Skinney$murmur3$Murmur3$c1 = 3432918353;
 var $Skinney$murmur3$Murmur3$c2 = 461845907;
@@ -6985,14 +7027,14 @@ var $Skinney$murmur3$Murmur3$rotlBy = F2(
 	});
 var $elm$core$Bitwise$xor = _Bitwise_xor;
 var $Skinney$murmur3$Murmur3$finalize = function (data) {
-	var acc = (!(!data.ah)) ? (data.W ^ A2(
+	var acc = (!(!data.aj)) ? (data.Y ^ A2(
 		$Skinney$murmur3$Murmur3$multiplyBy,
 		$Skinney$murmur3$Murmur3$c2,
 		A2(
 			$Skinney$murmur3$Murmur3$rotlBy,
 			15,
-			A2($Skinney$murmur3$Murmur3$multiplyBy, $Skinney$murmur3$Murmur3$c1, data.ah)))) : data.W;
-	var h0 = acc ^ data.ab;
+			A2($Skinney$murmur3$Murmur3$multiplyBy, $Skinney$murmur3$Murmur3$c1, data.aj)))) : data.Y;
+	var h0 = acc ^ data.ad;
 	var h1 = A2($Skinney$murmur3$Murmur3$multiplyBy, 2246822507, h0 ^ (h0 >>> 16));
 	var h2 = A2($Skinney$murmur3$Murmur3$multiplyBy, 3266489909, h1 ^ (h1 >>> 13));
 	return (h2 ^ (h2 >>> 16)) >>> 0;
@@ -7016,17 +7058,17 @@ var $Skinney$murmur3$Murmur3$mix = F2(
 	});
 var $Skinney$murmur3$Murmur3$hashFold = F2(
 	function (c, data) {
-		var res = data.ah | ((255 & $elm$core$Char$toCode(c)) << data.am);
-		var _v0 = data.am;
+		var res = data.aj | ((255 & $elm$core$Char$toCode(c)) << data.ao);
+		var _v0 = data.ao;
 		if (_v0 === 24) {
 			return {
-				ab: data.ab + 1,
-				ah: 0,
-				W: A2($Skinney$murmur3$Murmur3$mix, data.W, res),
-				am: 0
+				ad: data.ad + 1,
+				aj: 0,
+				Y: A2($Skinney$murmur3$Murmur3$mix, data.Y, res),
+				ao: 0
 			};
 		} else {
-			return {ab: data.ab + 1, ah: res, W: data.W, am: data.am + 8};
+			return {ad: data.ad + 1, aj: res, Y: data.Y, ao: data.ao + 8};
 		}
 	});
 var $Skinney$murmur3$Murmur3$hashString = F2(
@@ -7641,7 +7683,7 @@ var $rtfeldman$elm_css$Css$Preprocess$Resolve$applyStyles = F2(
 						_List_fromArray(
 							[
 								$rtfeldman$elm_css$Css$Structure$Keyframes(
-								{b$: str, ca: name})
+								{b1: str, cc: name})
 							]));
 				case 4:
 					var _v12 = styles.a;
@@ -7776,13 +7818,13 @@ var $rtfeldman$elm_css$Css$Preprocess$Resolve$toDeclarations = function (snippet
 	}
 };
 var $rtfeldman$elm_css$Css$Preprocess$Resolve$toStructure = function (_v0) {
-	var charset = _v0.bj;
-	var imports = _v0.bs;
-	var namespaces = _v0.by;
-	var snippets = _v0.bL;
+	var charset = _v0.bl;
+	var imports = _v0.bu;
+	var namespaces = _v0.bA;
+	var snippets = _v0.bN;
 	var declarations = $rtfeldman$elm_css$Css$Preprocess$Resolve$extract(
 		A2($elm$core$List$concatMap, $rtfeldman$elm_css$Css$Preprocess$unwrapSnippet, snippets));
-	return {bj: charset, b0: declarations, bs: imports, by: namespaces};
+	return {bl: charset, b2: declarations, bu: imports, bA: namespaces};
 };
 var $rtfeldman$elm_css$Css$Preprocess$Resolve$compileHelp = function (sheet) {
 	return $rtfeldman$elm_css$Css$Structure$Output$prettyPrint(
@@ -7828,7 +7870,7 @@ var $rtfeldman$elm_css$VirtualDom$Styled$snippetFromPair = function (_v0) {
 				])));
 };
 var $rtfeldman$elm_css$Css$Preprocess$stylesheet = function (snippets) {
-	return {bj: $elm$core$Maybe$Nothing, bs: _List_Nil, by: _List_Nil, bL: snippets};
+	return {bl: $elm$core$Maybe$Nothing, bu: _List_Nil, bA: _List_Nil, bN: snippets};
 };
 var $rtfeldman$elm_css$VirtualDom$Styled$toDeclaration = function (dict) {
 	return $rtfeldman$elm_css$Css$Preprocess$Resolve$compile(
@@ -8015,10 +8057,13 @@ var $rtfeldman$elm_css$VirtualDom$Styled$toUnstyled = function (vdom) {
 	}
 };
 var $rtfeldman$elm_css$Html$Styled$toUnstyled = $rtfeldman$elm_css$VirtualDom$Styled$toUnstyled;
-var $author$project$Belegungstester$AdnW = 0;
-var $author$project$Belegungstester$Bone = 1;
-var $author$project$Belegungstester$Dvorak = 2;
-var $author$project$Belegungstester$KOY = 3;
+var $author$project$Belegungstester$AdnW = {$: 0};
+var $author$project$Belegungstester$Bone = {$: 1};
+var $author$project$Belegungstester$CustomLayout = function (a) {
+	return {$: 6, a: a};
+};
+var $author$project$Belegungstester$Dvorak = {$: 2};
+var $author$project$Belegungstester$KOY = {$: 3};
 var $elm$core$Basics$ge = _Utils_ge;
 var $ohanhi$keyboard$Keyboard$rawValue = function (_v0) {
 	var key = _v0;
@@ -8030,103 +8075,160 @@ var $author$project$Belegungstester$update = F2(
 			switch (msg.$) {
 				case 0:
 					var newText = msg.a;
-					var newConvertedText = A3($author$project$Belegungstester$convertText, newText, model.n, model.p);
 					return _Utils_update(
 						model,
-						{k: newConvertedText, f: 0, m: newText});
+						{
+							g: A3($author$project$Belegungstester$convertText, newText, model.i, model.j),
+							d: 0,
+							h: newText
+						});
 				case 1:
 					var newLayout = msg.a;
 					return (newLayout === 'AdnW') ? _Utils_update(
 						model,
 						{
-							k: A3($author$project$Belegungstester$convertText, model.m, 0, model.p),
-							n: 0,
-							f: 0
+							g: A3($author$project$Belegungstester$convertText, model.h, $author$project$Belegungstester$AdnW, model.j),
+							i: $author$project$Belegungstester$AdnW,
+							d: 0
 						}) : ((newLayout === 'Bone') ? _Utils_update(
 						model,
 						{
-							k: A3($author$project$Belegungstester$convertText, model.m, 1, model.p),
-							n: 1,
-							f: 0
+							g: A3($author$project$Belegungstester$convertText, model.h, $author$project$Belegungstester$Bone, model.j),
+							i: $author$project$Belegungstester$Bone,
+							d: 0
 						}) : ((newLayout === 'Dvorak') ? _Utils_update(
 						model,
 						{
-							k: A3($author$project$Belegungstester$convertText, model.m, 2, model.p),
-							n: 2,
-							f: 0
+							g: A3($author$project$Belegungstester$convertText, model.h, $author$project$Belegungstester$Dvorak, model.j),
+							i: $author$project$Belegungstester$Dvorak,
+							d: 0
 						}) : ((newLayout === 'KOY') ? _Utils_update(
 						model,
 						{
-							k: A3($author$project$Belegungstester$convertText, model.m, 3, model.p),
-							n: 3,
-							f: 0
+							g: A3($author$project$Belegungstester$convertText, model.h, $author$project$Belegungstester$KOY, model.j),
+							i: $author$project$Belegungstester$KOY,
+							d: 0
 						}) : ((newLayout === 'Neo') ? _Utils_update(
 						model,
 						{
-							k: A3($author$project$Belegungstester$convertText, model.m, 4, model.p),
-							n: 4,
-							f: 0
+							g: A3($author$project$Belegungstester$convertText, model.h, $author$project$Belegungstester$Neo, model.j),
+							i: $author$project$Belegungstester$Neo,
+							d: 0
 						}) : ((newLayout === 'QWERTZ') ? _Utils_update(
 						model,
 						{
-							k: A3($author$project$Belegungstester$convertText, model.m, 5, model.p),
-							n: 5,
-							f: 0
-						}) : model)))));
+							g: A3($author$project$Belegungstester$convertText, model.h, $author$project$Belegungstester$QWERTZ, model.j),
+							i: $author$project$Belegungstester$QWERTZ,
+							d: 0
+						}) : ((newLayout === 'Folgendem') ? _Utils_update(
+						model,
+						{
+							g: A3(
+								$author$project$Belegungstester$convertText,
+								model.h,
+								$author$project$Belegungstester$CustomLayout(model.H),
+								model.j),
+							i: $author$project$Belegungstester$CustomLayout(model.H),
+							d: 0
+						}) : model))))));
 				case 2:
 					var newLayout = msg.a;
 					return (newLayout === 'AdnW') ? _Utils_update(
 						model,
 						{
-							k: A3($author$project$Belegungstester$convertText, model.m, model.n, 0),
-							p: 0,
-							f: 0
+							g: A3($author$project$Belegungstester$convertText, model.h, model.i, $author$project$Belegungstester$AdnW),
+							j: $author$project$Belegungstester$AdnW,
+							d: 0
 						}) : ((newLayout === 'Bone') ? _Utils_update(
 						model,
 						{
-							k: A3($author$project$Belegungstester$convertText, model.m, model.n, 1),
-							p: 1,
-							f: 0
+							g: A3($author$project$Belegungstester$convertText, model.h, model.i, $author$project$Belegungstester$Bone),
+							j: $author$project$Belegungstester$Bone,
+							d: 0
 						}) : ((newLayout === 'Dvorak') ? _Utils_update(
 						model,
 						{
-							k: A3($author$project$Belegungstester$convertText, model.m, model.n, 2),
-							p: 2,
-							f: 0
+							g: A3($author$project$Belegungstester$convertText, model.h, model.i, $author$project$Belegungstester$Dvorak),
+							j: $author$project$Belegungstester$Dvorak,
+							d: 0
 						}) : ((newLayout === 'KOY') ? _Utils_update(
 						model,
 						{
-							k: A3($author$project$Belegungstester$convertText, model.m, model.n, 3),
-							p: 3,
-							f: 0
+							g: A3($author$project$Belegungstester$convertText, model.h, model.i, $author$project$Belegungstester$KOY),
+							j: $author$project$Belegungstester$KOY,
+							d: 0
 						}) : ((newLayout === 'Neo') ? _Utils_update(
 						model,
 						{
-							k: A3($author$project$Belegungstester$convertText, model.m, model.n, 4),
-							p: 4,
-							f: 0
+							g: A3($author$project$Belegungstester$convertText, model.h, model.i, $author$project$Belegungstester$Neo),
+							j: $author$project$Belegungstester$Neo,
+							d: 0
 						}) : ((newLayout === 'QWERTZ') ? _Utils_update(
 						model,
 						{
-							k: A3($author$project$Belegungstester$convertText, model.m, model.n, 5),
-							p: 5,
-							f: 0
-						}) : model)))));
+							g: A3($author$project$Belegungstester$convertText, model.h, model.i, $author$project$Belegungstester$QWERTZ),
+							j: $author$project$Belegungstester$QWERTZ,
+							d: 0
+						}) : ((newLayout === 'Folgendem') ? _Utils_update(
+						model,
+						{
+							g: A3(
+								$author$project$Belegungstester$convertText,
+								model.h,
+								model.i,
+								$author$project$Belegungstester$CustomLayout(model.I)),
+							j: $author$project$Belegungstester$CustomLayout(model.I),
+							d: 0
+						}) : model))))));
+				case 3:
+					var newCustomInputLayout = msg.a;
+					return _Utils_update(
+						model,
+						{
+							g: A3(
+								$author$project$Belegungstester$convertText,
+								model.h,
+								$author$project$Belegungstester$CustomLayout(newCustomInputLayout),
+								model.j),
+							H: newCustomInputLayout,
+							i: $author$project$Belegungstester$CustomLayout(newCustomInputLayout),
+							d: 0
+						});
+				case 4:
+					var newCustomOutputLayout = msg.a;
+					return _Utils_update(
+						model,
+						{
+							g: A3(
+								$author$project$Belegungstester$convertText,
+								model.h,
+								model.i,
+								$author$project$Belegungstester$CustomLayout(newCustomOutputLayout)),
+							I: newCustomOutputLayout,
+							j: $author$project$Belegungstester$CustomLayout(newCustomOutputLayout),
+							d: 0
+						});
 				default:
 					var key = msg.a;
 					return _Utils_eq(
 						$ohanhi$keyboard$Keyboard$rawValue(key),
-						A3($elm$core$String$slice, model.f, model.f + 1, model.k)) ? ((_Utils_cmp(
-						model.f,
-						$elm$core$String$length(model.m) - 1) > -1) ? _Utils_update(
+						A3($elm$core$String$slice, model.d, model.d + 1, model.g)) ? ((_Utils_cmp(
+						model.d,
+						$elm$core$String$length(model.h) - 1) > -1) ? _Utils_update(
 						model,
-						{f: 0}) : _Utils_update(
+						{d: 0}) : _Utils_update(
 						model,
-						{f: model.f + 1})) : model;
+						{d: model.d + 1})) : model;
 			}
 		}();
 		return _Utils_Tuple2(newModel, $elm$core$Platform$Cmd$none);
 	});
+var $author$project$Belegungstester$CustomInputLayoutChanged = function (a) {
+	return {$: 3, a: a};
+};
+var $author$project$Belegungstester$CustomOutputLayoutChanged = function (a) {
+	return {$: 4, a: a};
+};
 var $author$project$Belegungstester$InputLayoutChanged = function (a) {
 	return {$: 1, a: a};
 };
@@ -8137,7 +8239,17 @@ var $author$project$Belegungstester$TextChanged = function (a) {
 	return {$: 0, a: a};
 };
 var $rtfeldman$elm_css$Css$Structure$Compatible = 0;
-var $rtfeldman$elm_css$Css$auto = {bW: 0, a: 0, ae: 0, aN: 0, b8: 0, ai: 0, K: 0, C: 0, al: 0, z: 0, aV: 0, aq: 0, v: 0, E: 'auto'};
+var $rtfeldman$elm_css$Css$auto = {bY: 0, a: 0, ag: 0, aP: 0, ca: 0, ak: 0, M: 0, C: 0, an: 0, z: 0, aX: 0, as: 0, v: 0, E: 'auto'};
+var $rtfeldman$elm_css$Css$Preprocess$AppendProperty = function (a) {
+	return {$: 0, a: a};
+};
+var $rtfeldman$elm_css$Css$property = F2(
+	function (key, value) {
+		return $rtfeldman$elm_css$Css$Preprocess$AppendProperty(key + (':' + value));
+	});
+var $rtfeldman$elm_css$Css$color = function (c) {
+	return A2($rtfeldman$elm_css$Css$property, 'color', c.E);
+};
 var $rtfeldman$elm_css$VirtualDom$Styled$Attribute = F3(
 	function (a, b, c) {
 		return {$: 0, a: a, b: b, c: c};
@@ -8177,13 +8289,6 @@ var $rtfeldman$elm_css$Html$Styled$Internal$css = function (styles) {
 	return A3($rtfeldman$elm_css$VirtualDom$Styled$Attribute, classProperty, styles, classname);
 };
 var $rtfeldman$elm_css$Html$Styled$Attributes$css = $rtfeldman$elm_css$Html$Styled$Internal$css;
-var $rtfeldman$elm_css$Css$Preprocess$AppendProperty = function (a) {
-	return {$: 0, a: a};
-};
-var $rtfeldman$elm_css$Css$property = F2(
-	function (key, value) {
-		return $rtfeldman$elm_css$Css$Preprocess$AppendProperty(key + (':' + value));
-	});
 var $rtfeldman$elm_css$Css$displayFlex = A2($rtfeldman$elm_css$Css$property, 'display', 'flex');
 var $rtfeldman$elm_css$VirtualDom$Styled$Node = F3(
 	function (a, b, c) {
@@ -8197,6 +8302,7 @@ var $rtfeldman$elm_css$Css$prop1 = F2(
 		return A2($rtfeldman$elm_css$Css$property, key, arg.E);
 	});
 var $rtfeldman$elm_css$Css$flex = $rtfeldman$elm_css$Css$prop1('flex');
+var $rtfeldman$elm_css$Css$fontSize = $rtfeldman$elm_css$Css$prop1('font-size');
 var $rtfeldman$elm_css$Html$Styled$h1 = $rtfeldman$elm_css$Html$Styled$node('h1');
 var $rtfeldman$elm_css$Html$Styled$h3 = $rtfeldman$elm_css$Html$Styled$node('h3');
 var $rtfeldman$elm_css$Css$height = $rtfeldman$elm_css$Css$prop1('height');
@@ -8219,29 +8325,29 @@ var $elm$core$String$fromFloat = _String_fromNumber;
 var $rtfeldman$elm_css$Css$Internal$lengthConverter = F3(
 	function (units, unitLabel, numericValue) {
 		return {
-			a8: 0,
-			bh: 0,
-			ae: 0,
+			ba: 0,
+			bj: 0,
+			ag: 0,
 			q: 0,
-			az: 0,
-			ai: 0,
-			K: 0,
-			aj: 0,
+			aB: 0,
 			ak: 0,
-			S: 0,
-			T: 0,
+			M: 0,
+			al: 0,
+			am: 0,
+			U: 0,
+			V: 0,
 			C: 0,
-			M: numericValue,
-			ap: 0,
-			ar: unitLabel,
-			aH: units,
+			O: numericValue,
+			ar: 0,
+			at: unitLabel,
+			aJ: units,
 			E: _Utils_ap(
 				$elm$core$String$fromFloat(numericValue),
 				unitLabel)
 		};
 	});
 var $rtfeldman$elm_css$Css$px = A2($rtfeldman$elm_css$Css$Internal$lengthConverter, 0, 'px');
-var $rtfeldman$elm_css$Css$solid = {s: 0, X: 0, E: 'solid'};
+var $rtfeldman$elm_css$Css$solid = {s: 0, Z: 0, E: 'solid'};
 var $rtfeldman$elm_css$Html$Styled$span = $rtfeldman$elm_css$Html$Styled$node('span');
 var $rtfeldman$elm_css$VirtualDom$Styled$Unstyled = function (a) {
 	return {$: 4, a: a};
@@ -8290,13 +8396,13 @@ var $rtfeldman$elm_css$Css$maxWidth = $rtfeldman$elm_css$Css$prop1('max-width');
 var $rtfeldman$elm_css$Css$UnitlessFloat = 0;
 var $rtfeldman$elm_css$Css$num = function (val) {
 	return {
-		T: 0,
+		V: 0,
 		C: 0,
-		aB: 0,
-		aP: 0,
-		M: val,
-		ar: '',
-		aH: 0,
+		aD: 0,
+		aR: 0,
+		O: val,
+		at: '',
+		aJ: 0,
 		E: $elm$core$String$fromFloat(val)
 	};
 };
@@ -8345,6 +8451,28 @@ var $rtfeldman$elm_css$Html$Styled$p = $rtfeldman$elm_css$Html$Styled$node('p');
 var $rtfeldman$elm_css$Css$padding = $rtfeldman$elm_css$Css$prop1('padding');
 var $rtfeldman$elm_css$Css$PercentageUnits = 0;
 var $rtfeldman$elm_css$Css$pct = A2($rtfeldman$elm_css$Css$Internal$lengthConverter, 0, '%');
+var $rtfeldman$elm_css$Css$cssFunction = F2(
+	function (funcName, args) {
+		return funcName + ('(' + (A2($elm$core$String$join, ', ', args) + ')'));
+	});
+var $rtfeldman$elm_css$Css$rgb = F3(
+	function (r, g, b) {
+		return {
+			aw: 1,
+			ay: b,
+			B: 0,
+			aA: g,
+			aE: r,
+			E: A2(
+				$rtfeldman$elm_css$Css$cssFunction,
+				'rgb',
+				A2(
+					$elm$core$List$map,
+					$elm$core$String$fromInt,
+					_List_fromArray(
+						[r, g, b])))
+		};
+	});
 var $rtfeldman$elm_css$Html$Styled$select = $rtfeldman$elm_css$Html$Styled$node('select');
 var $elm$json$Json$Encode$bool = _Json_wrap;
 var $rtfeldman$elm_css$VirtualDom$Styled$property = F2(
@@ -8363,6 +8491,7 @@ var $rtfeldman$elm_css$Html$Styled$Attributes$boolProperty = F2(
 			$elm$json$Json$Encode$bool(bool));
 	});
 var $rtfeldman$elm_css$Html$Styled$Attributes$selected = $rtfeldman$elm_css$Html$Styled$Attributes$boolProperty('selected');
+var $rtfeldman$elm_css$Css$small = {q: 0, E: 'small'};
 var $rtfeldman$elm_css$Html$Styled$textarea = $rtfeldman$elm_css$Html$Styled$node('textarea');
 var $rtfeldman$elm_css$Html$Styled$Attributes$stringProperty = F2(
 	function (key, string) {
@@ -8382,10 +8511,10 @@ var $author$project$Belegungstester$view = function (model) {
 				_List_fromArray(
 					[
 						$rtfeldman$elm_css$Css$maxWidth(
-						$rtfeldman$elm_css$Css$px(800)),
+						$rtfeldman$elm_css$Css$px(1024)),
 						$rtfeldman$elm_css$Css$margin($rtfeldman$elm_css$Css$auto),
 						$rtfeldman$elm_css$Css$padding(
-						$rtfeldman$elm_css$Css$px(10))
+						$rtfeldman$elm_css$Css$px(20))
 					]))
 			]),
 		_List_fromArray(
@@ -8455,6 +8584,13 @@ var $author$project$Belegungstester$view = function (model) {
 								_List_fromArray(
 									[
 										$rtfeldman$elm_css$Html$Styled$text('QWERTZ')
+									])),
+								A2(
+								$rtfeldman$elm_css$Html$Styled$option,
+								_List_Nil,
+								_List_fromArray(
+									[
+										$rtfeldman$elm_css$Html$Styled$text('Folgendem')
 									]))
 							])),
 						$rtfeldman$elm_css$Html$Styled$text(' und würde gerne wissen, wie sich das Tippen mit '),
@@ -8510,6 +8646,13 @@ var $author$project$Belegungstester$view = function (model) {
 								_List_fromArray(
 									[
 										$rtfeldman$elm_css$Html$Styled$text('QWERTZ')
+									])),
+								A2(
+								$rtfeldman$elm_css$Html$Styled$option,
+								_List_Nil,
+								_List_fromArray(
+									[
+										$rtfeldman$elm_css$Html$Styled$text('Folgendem')
 									]))
 							])),
 						$rtfeldman$elm_css$Html$Styled$text(' anfühlt.')
@@ -8534,7 +8677,124 @@ var $author$project$Belegungstester$view = function (model) {
 										$rtfeldman$elm_css$Css$flex(
 										$rtfeldman$elm_css$Css$num(1)),
 										$rtfeldman$elm_css$Css$marginRight(
-										$rtfeldman$elm_css$Css$px(10))
+										$rtfeldman$elm_css$Css$px(40))
+									]))
+							]),
+						_List_fromArray(
+							[
+								_Utils_eq(
+								model.i,
+								$author$project$Belegungstester$CustomLayout(model.H)) ? A2(
+								$rtfeldman$elm_css$Html$Styled$div,
+								_List_Nil,
+								_List_fromArray(
+									[
+										A2(
+										$rtfeldman$elm_css$Html$Styled$textarea,
+										_List_fromArray(
+											[
+												$rtfeldman$elm_css$Html$Styled$Attributes$value(model.H),
+												$rtfeldman$elm_css$Html$Styled$Events$onInput($author$project$Belegungstester$CustomInputLayoutChanged),
+												$rtfeldman$elm_css$Html$Styled$Attributes$css(
+												_List_fromArray(
+													[
+														$rtfeldman$elm_css$Css$width(
+														$rtfeldman$elm_css$Css$px(100)),
+														$rtfeldman$elm_css$Css$height(
+														$rtfeldman$elm_css$Css$px(120))
+													]))
+											]),
+										_List_Nil)
+									])) : $rtfeldman$elm_css$Html$Styled$text(''),
+								($elm$core$String$length(
+								A3($elm$core$String$replace, '\n', '', model.H)) !== 70) ? A2(
+								$rtfeldman$elm_css$Html$Styled$div,
+								_List_fromArray(
+									[
+										$rtfeldman$elm_css$Html$Styled$Attributes$css(
+										_List_fromArray(
+											[
+												$rtfeldman$elm_css$Css$fontSize($rtfeldman$elm_css$Css$small),
+												$rtfeldman$elm_css$Css$color(
+												A3($rtfeldman$elm_css$Css$rgb, 255, 0, 0))
+											]))
+									]),
+								_List_fromArray(
+									[
+										$rtfeldman$elm_css$Html$Styled$text('Eine Belegung sollte aus 70 Zeichen bestehen. 2×(12+12+11)')
+									])) : $rtfeldman$elm_css$Html$Styled$text('')
+							])),
+						A2(
+						$rtfeldman$elm_css$Html$Styled$div,
+						_List_fromArray(
+							[
+								$rtfeldman$elm_css$Html$Styled$Attributes$css(
+								_List_fromArray(
+									[
+										$rtfeldman$elm_css$Css$flex(
+										$rtfeldman$elm_css$Css$num(1))
+									]))
+							]),
+						_List_fromArray(
+							[
+								_Utils_eq(
+								model.j,
+								$author$project$Belegungstester$CustomLayout(model.I)) ? A2(
+								$rtfeldman$elm_css$Html$Styled$textarea,
+								_List_fromArray(
+									[
+										$rtfeldman$elm_css$Html$Styled$Attributes$value(model.I),
+										$rtfeldman$elm_css$Html$Styled$Events$onInput($author$project$Belegungstester$CustomOutputLayoutChanged),
+										$rtfeldman$elm_css$Html$Styled$Attributes$css(
+										_List_fromArray(
+											[
+												$rtfeldman$elm_css$Css$width(
+												$rtfeldman$elm_css$Css$px(100)),
+												$rtfeldman$elm_css$Css$height(
+												$rtfeldman$elm_css$Css$px(120))
+											]))
+									]),
+								_List_Nil) : $rtfeldman$elm_css$Html$Styled$text(''),
+								($elm$core$String$length(
+								A3($elm$core$String$replace, '\n', '', model.I)) !== 70) ? A2(
+								$rtfeldman$elm_css$Html$Styled$div,
+								_List_fromArray(
+									[
+										$rtfeldman$elm_css$Html$Styled$Attributes$css(
+										_List_fromArray(
+											[
+												$rtfeldman$elm_css$Css$fontSize($rtfeldman$elm_css$Css$small),
+												$rtfeldman$elm_css$Css$color(
+												A3($rtfeldman$elm_css$Css$rgb, 255, 0, 0))
+											]))
+									]),
+								_List_fromArray(
+									[
+										$rtfeldman$elm_css$Html$Styled$text('Eine Belegung sollte aus 70 Zeichen bestehen. 2×(12+12+11)')
+									])) : $rtfeldman$elm_css$Html$Styled$text('')
+							]))
+					])),
+				A2(
+				$rtfeldman$elm_css$Html$Styled$div,
+				_List_fromArray(
+					[
+						$rtfeldman$elm_css$Html$Styled$Attributes$css(
+						_List_fromArray(
+							[$rtfeldman$elm_css$Css$displayFlex]))
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$rtfeldman$elm_css$Html$Styled$div,
+						_List_fromArray(
+							[
+								$rtfeldman$elm_css$Html$Styled$Attributes$css(
+								_List_fromArray(
+									[
+										$rtfeldman$elm_css$Css$flex(
+										$rtfeldman$elm_css$Css$num(1)),
+										$rtfeldman$elm_css$Css$marginRight(
+										$rtfeldman$elm_css$Css$px(40))
 									]))
 							]),
 						_List_fromArray(
@@ -8544,9 +8804,9 @@ var $author$project$Belegungstester$view = function (model) {
 								_List_Nil,
 								_List_fromArray(
 									[
-										$rtfeldman$elm_css$Html$Styled$text('Eingabe')
+										$rtfeldman$elm_css$Html$Styled$text('Das müsste ich tippen…')
 									])),
-								A2($author$project$Belegungstester$markPositionInText, model.f, model.k)
+								A2($author$project$Belegungstester$markPositionInText, model.d, model.g)
 							])),
 						A2(
 						$rtfeldman$elm_css$Html$Styled$div,
@@ -8566,13 +8826,13 @@ var $author$project$Belegungstester$view = function (model) {
 								_List_Nil,
 								_List_fromArray(
 									[
-										$rtfeldman$elm_css$Html$Styled$text('Ergebnis')
+										$rtfeldman$elm_css$Html$Styled$text('…um diesen Text zu erzeugen.')
 									])),
 								A2(
 								$rtfeldman$elm_css$Html$Styled$textarea,
 								_List_fromArray(
 									[
-										$rtfeldman$elm_css$Html$Styled$Attributes$value(model.m),
+										$rtfeldman$elm_css$Html$Styled$Attributes$value(model.h),
 										$rtfeldman$elm_css$Html$Styled$Events$onInput($author$project$Belegungstester$TextChanged),
 										$rtfeldman$elm_css$Html$Styled$Attributes$css(
 										_List_fromArray(
@@ -8590,10 +8850,10 @@ var $author$project$Belegungstester$view = function (model) {
 };
 var $author$project$Belegungstester$main = $elm$browser$Browser$element(
 	{
-		b7: $author$project$Belegungstester$init,
-		ci: $author$project$Belegungstester$subscriptions,
-		ck: $author$project$Belegungstester$update,
-		cm: A2($elm$core$Basics$composeR, $author$project$Belegungstester$view, $rtfeldman$elm_css$Html$Styled$toUnstyled)
+		b9: $author$project$Belegungstester$init,
+		ck: $author$project$Belegungstester$subscriptions,
+		cm: $author$project$Belegungstester$update,
+		co: A2($elm$core$Basics$composeR, $author$project$Belegungstester$view, $rtfeldman$elm_css$Html$Styled$toUnstyled)
 	});
 _Platform_export({'Belegungstester':{'init':$author$project$Belegungstester$main(
 	$elm$json$Json$Decode$succeed(0))(0)}});}(this));
